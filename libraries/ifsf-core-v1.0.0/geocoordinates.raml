@@ -1,0 +1,41 @@
+#%RAML 1.0 Library
+usage: additional base types
+
+uses:
+  extension: extension.raml
+
+types:
+  geoCoordinates:
+    type: extension.extensible
+    properties:
+      latitude:
+        description:
+          Latitude (degree range -90 to +90) with positive values for N latitude and
+          negative for S latitude.
+        type: number
+        format: double
+        minimum: -90
+        maximum: 90
+      longitude:
+        description:
+          Longitude (degree range -180 to +180) positive values for E of the prime
+          meridian, and negative values W longitude.
+        type: number
+        format: double
+        minimum: -180
+        maximum: 180
+      angleUOM:
+        description:
+          Radians and degrees are pure decimal numbers. Values expressed in "decimal dd.mm.ss"
+          units have the numeric format "28.3050" representing 28 degrees 30 minutes
+          and 50 seconds. Both the minutes and seconds must be two characters with a
+          numeric range between 00 to 60.
+        type: string
+        required: false
+        enum: [radians, "decimal degrees", "decimal dd.mm.ss"]
+        default: "decimal degrees"
+      datum:
+        description: geodetic reference system used for positional measurement
+        type: string
+        default: "WGS84"
+        required: false

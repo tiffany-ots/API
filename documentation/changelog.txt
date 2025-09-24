@@ -1,0 +1,14 @@
+Release 20161122
+- Added JSON schemas for each RAML data type
+- HTML documentation created using RAML2HTML 4.0 beta 14
+
+Release 20160716
+- Support for RAML 1.0 final
+- New IFSF core library version 1.0.0 (look at libraries/ifsf-core-v1.0.0/core.raml)
+- Fixed lack of apikey support in core libraries (security schemes). Now REMC supports apikey and WSM would support it if we were to migrate to the new core libraries.
+- Many fixes and improvements in data types
+- Improved HTTP response code handling
+- Improved asynchronous request handling
+- Improved result paging (no more lastReceivedRecord are necessary, just use an after= queryparameter)
+- Support for RAML type discriminators (similar to XML xsd:choice). 
+- Support for PCI Asset Data report based on Conexxus siteAssetData.V.11.Sort.xsd.

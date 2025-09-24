@@ -1,0 +1,22 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "syslog.raml",
+	"definitions": {
+		"severityEnum": {
+			"description": "extracted verbatim from syslogd manual",
+			"type": "string",
+			"enum": [
+				"emerg",
+				"alert",
+				"err",
+				"warning",
+				"notice",
+				"info",
+				"debug"
+			]
+		},
+		"severityCode": {
+			"$ref": "#/definitions/severityEnum"
+		}
+	}
+}

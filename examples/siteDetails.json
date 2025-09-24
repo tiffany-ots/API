@@ -1,0 +1,27 @@
+{
+  "uniqueID" : "331303e0-a61e-4d7e-9c2d-677553e67de6",
+  "name" : "Shell Hazerswoude",
+  "siteIDs" : [
+    { "type":"SAP", "id":"123456" },
+    { "type":"SHIPTO", "id":"567890" }
+  ],
+  "addressLines" : [
+    "Delta 1A, Building L’Aimant",
+    "Business Park Ijsseloord 2"
+  ],
+  "city": "Arnhem",
+  "postalCode" : "6825 ML",
+  "region" :"Gelderland",
+  "country" : "NL",
+  "phoneNumbers" :[
+    { "type" : "main", "number" : "+31-26-376-4800" },
+    { "type" : "fax", "number" : "+31-26-376-4840" }
+  ],
+  "languages" : ["dut"],
+  "geoCoordinates":{
+    "latitude": 51.978889,
+    "longitude": 5.9657452
+  },
+  "brands": ["ESSO","On The Run"],
+  "tags": ["carwash","atm"]
+}

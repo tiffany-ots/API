@@ -1,0 +1,119 @@
+#%RAML 1.0 Library
+
+uses:
+  country: country.raml
+  currency: currency.raml
+  extension: extension.raml
+  geo: geocoordinates.raml
+  language: language.raml
+
+types:
+  extensible: extension.extensible
+
+  site:
+    type: extensible
+    properties:
+      uniqueID:
+        type: string
+        maxLength: 40
+        description: >
+          If the ID is issued by the CHP, this ID is universally unique.
+          If the ID is issued by the agent, two sites controlled by the agent
+          cannot have the same ID.
+      siteIDs:
+        description: a site may have multiple IDs for different purposes
+        type: siteID[]
+        minItems: 1
+      locationID:
+        description:
+          identifier for the specific location. This ID may remain consistent
+          even if the site ownership changes.
+        type: string
+        maxLength: 40
+        required: false
+      name:
+        description: the site name
+        type: string
+        maxLength: 80
+      addressLines:
+        type: array
+        required: false
+        items:
+          type: string
+          maxLength: 80
+        maxItems: 3
+      city:
+        type: string
+        maxLength: 80
+        required: false
+      postalCode:
+        type: string
+        maxLength: 20
+        required: false
+      subregion:
+        description:
+          Second level of political division of a country, usually county, department or municipality.
+          If the site were in USA, this property would contain the name of the county.
+        type: string
+        maxLength: 80
+        required: false
+      region:
+        description:
+          First level of political division of a country, usually state or province.
+          If the site were in USA, this property would contain the name of the state.
+        type: string
+        maxLength: 80
+        required: false
+      country:
+        type: country.codeSoftEnum
+        required: true
+        description: we need the country code in order to disambiguate
+      phoneNumbers:
+        type: array
+        items:
+          properties:
+            type:
+              enum: [mobile, work, home, main, fax, pager, other]
+            number:
+              type: string
+              maxLength: 20
+        required: false
+      languages:
+        type: language.codeSoftEnum[]
+        required: false
+      localCurrencies:
+        displayName: local currencies
+        description: currencies issued by the local government
+        type: currency.codeSoftEnum[]
+        required: false
+      foreignCurrencies:
+        displayName: foreign currencies
+        description: currencies issued by foreign governments
+        type: currency.codeSoftEnum[]
+        required: false
+      geoCoordinates:
+        type: geo.geoCoordinates
+        description: The lat/lon coordinates for the site.
+        required: false
+      brands:
+        type: string[]
+        description: >
+          Describes the site branding (e.g. BP, Esso, OMV, Q8, Shell, Statoil,
+          Total) may be different than the site name.  If there is more
+          than one brand at the site, all brands should be included.
+        example: ["Esso","On The Run", "Shell", "Select"]
+        required: false
+      tags:
+        type: string[]
+        description: list of tag words
+        example: ["carwash","oilservice","truckstop","cstore","atm"]
+        required: false
+
+  siteID:
+    properties:
+      type:
+        type: string
+        maxLength: 10
+      id:
+        type: string
+        maxLength: 20

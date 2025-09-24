@@ -1,0 +1,224 @@
+#%RAML 1.0
+title: REMC CHP
+version: 1.0
+baseUri: http:/hostname/ifsf-remc-chp/{version}
+mediaType: application/json
+protocols: [HTTP, HTTPS]
+securedBy: [core.noAuth, core.basicAuthentication, core.oAuth20]
+
+traits:
+  paged: !include traits/paged.raml
+  filteredByDeviceType: !include traits/deviceTypeFilter.raml
+  filteredByDeviceID: !include traits/deviceIDFilter.raml
+  filteredByRecordType: !include  traits/recordTypeFilter.raml
+  withViews: !include traits/withViews.raml
+  includeDisabled: !include traits/disabledFilter.raml
+
+uses:
+  core: libraries/ifsf-core-v1.0.0/core.raml
+  paged: traits/paged.raml
+  remc: libraries/remcTypes.raml
+  pci: libraries/pciSiteAssetData.raml
+
+/globalSiteIDs:
+  get:
+    displayName: list of global site ids, searched by local site id
+    description:
+      An agent needs to know a site's global site ID in order to be able to access
+      site-level resources. This resource allows the agent to convert local IDs
+      to global IDs.
+    queryParameters:
+      localIDType:
+        description: local site identifier type
+        type: string
+        example: "SAP"
+        required: false
+      localID:
+        description: local site identifier that is unique per country
+        type: string
+        example: "123456"
+        required: false
+      country:
+        description:
+          country code is used to disambiguate IDs that could be
+          repeated in different countries
+        type: core.countryCode
+        example: "GB"
+        required: false
+    responses:
+      200:
+        body:
+          type: string[]
+          example: ["9484e299-793e-46df-92cc-0282dfb940a4"]
+
+/sites:
+  /{globalSiteID}:
+    displayName: site details
+    get:
+      description:
+        returns the site details such as name, ids, country and other optional
+        site properties.
+      responses:
+        200:
+          body:
+            type: core.site
+            example: !include examples/siteDetails.json
+        404:
+          body:
+            type: core.error
+
+    /devices:
+      displayName: Device description and optional configuration information
+      description: >
+        The device resource is used to store equipment information and
+        configuration. To update its configuration information, the agent will
+        post new events records to a CHP processing queue.
+      get:
+        displayName: Obtain a list of devices for a site
+        description: >
+          The get command will return a list of all device nodes defined for a
+          site including its configuration datetime. The datetime will be used by
+          the site application to verify if configuration has changed for any
+          device and update the CHP accordingly. An Expired parameter will indicate
+          the client that the configuration needs to be refreshed. In any case, any
+          device configuration update will be submitted through REMCRecords.
+          The view query parameter enables the agent to query the CHP for the
+          complete device configuration information (using view=verbose). This
+          comes useful after an agent reintallation to populate the agent
+          configuration database.
+          Usage: <BaseURI>/sites/{siteID}/devices/?view=verbose
+        is: [filteredByDeviceType, filteredByDeviceID, paged, withViews, includeDisabled]
+        responses:
+          200:
+            body:
+              type: remc.device[]
+              example: !include examples/deviceList.json
+          404:
+            body:
+              type: core.error
+              example: !include examples/errorResponse404.json
+      delete:
+        displayName: Delete devices from the CHP.
+        description: >
+          Used for the agent to notify the REMC CHP that a device was removed from
+          the site. CHP should reject any further REMC records for those device IDs.
+          Delete verbs will enable the site agent to send a list of devices that
+          are no longer active at the site.
+        body:
+          type: string[]
+          example: !include examples/deviceIDList.json
+        responses:
+          200:
+            body:
+              type: core.error
+              example: !include examples/errorResponse200.json
+          404:
+            description: unable to delete a device (used for single device calls)
+            body:
+              type: core.error
+              example: !include examples/errorResponse404.json
+          202:
+            description: >
+              The CHP processes the request asynchronously.
+              When a large amount of records are requested for deletion, the CHP can process the
+              request asynchonously. it will return a referenceID for the agent
+              to collect the processing result at the resource:
+              /results/{referenceID}
+            body:
+              type: core.error
+              example: !include examples/errorResponse202.json
+          490:
+            description: >
+              For synchronous processing, returns processing errors.
+              If an error has occurred during processing, the CHP shall return the
+              last succesfully deleted record, allowing the agent to post pending
+              information. The "reference" property will contain the last
+              succesfully deleted deviceID.
+            body:
+              type: core.error
+              example: !include examples/processingResultWithError.json
+
+    /remcRecords:
+      post:
+        displayName: Used by the REMC agents to push REMC records to host.
+        description: >
+          The agent will push REMC records to CHP. Agent must make sure to only
+          post new records to the CHP. If agent sends duplicated records, the CHP
+          must reject the post due to duplicate record ID.
+          When config events are posted to the CHP, the CHP will update the
+          configuration data if necessary and update the device config expiration date.
+
+        body:
+          type: remc.device[]
+          example: !include examples/devicesWithConfigsEventsPoints.json
+
+        responses:
+          200:
+            description: >
+              For sycnhronous processing, returns success when done. The CHP can
+              decide to process the request synchronously or asynchronously.
+            body:
+              type: core.error
+              example: !include examples/processingResult.json
+          202:
+            description: |
+              The CHP processes the request asynchronously.
+              When a large amount of records are posted, the CHP can process the
+              request asynchonously. it will return a referenceID for the agent
+              to collect the processing result at resource
+              /results/{referenceID}
+            body:
+              type: core.error
+              example: !include examples/errorResponse202.json
+          490:
+            description: >
+              For sycnhronous processing, returns processing errors.
+              If an error has occurred during processing, the CHP shall return the
+              last succesfully processed record, for the agent to post pending
+              information.
+            body:
+              type: core.error
+              example: !include examples/processingResultWithError.json
+
+    /pciSiteAssetData:
+      post:
+        displayName: PCI Site Asset Data reports
+        description: >
+          Used by the REMC agents to push a PCI Asset report to the host.
+        body:
+          type: pci.siteAssetData
+          example: !include examples/pciAssetData.json
+        responses:
+          200:
+            body:
+              type: core.error
+
+/results:
+  /{referenceID}:
+    get:
+      displayName: Returns processing results by reference
+      description: >
+        The agent can use this resource to retrieve the result of an asynchronous
+        operation.
+      responses:
+        200:
+          description: >
+            Returns 200 when the process has finished. The response body includes
+            the results detail.
+            If an error has occurred during processing, the CHP shall return the
+            last succesfully processed record, for the agent to post pending
+            information.
+          body:
+            type: core.error
+            example: !include examples\processingResult.json
+        202:
+          description: >
+            Returns 202 with the same referenceID to indicate that the server
+            is still processing the current operation.
+          body:
+            type: core.error
+            example: !include examples\errorResponse202.json
+        404:
+          body:
+            type: core.error
+            example: !include examples\errorResponse404.json

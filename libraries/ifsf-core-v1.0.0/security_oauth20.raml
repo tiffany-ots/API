@@ -1,0 +1,50 @@
+#%RAML 1.0 SecurityScheme
+
+uses:
+  error: error.raml
+
+description: OAuth2 security scheme as defined by IFSF Part 2.03 document.
+type: OAuth 2.0
+describedBy:
+  headers:
+    Authorization:
+      type: string
+      description:
+        Used to send a valid OAuth 2 access token. Do not use together with
+        the "access_token" query string parameter.
+  queryParameters:
+    access_token:
+      description:
+        Used to send a valid OAuth 2 access token. Do not use together with
+        the "Authorization" header
+  responses:
+    401:
+        description:
+            Bad or expired token. This can happen if the user or
+            revoked or expired an access token. To fix, you should re-
+            authenticate the user.
+        body:
+          application/json:
+            type: error.response
+            example:
+              {
+                "error": 401,
+                "description": "Bad or expired token"
+              }
+    403:
+        description:
+            Bad OAuth request. Unfortunately, re-authenticating the user won't help here.
+        body:
+          application/json:
+            type: error.response
+            example:
+              {
+                "error": 403,
+                "description": "Invalid consumer key, bad nonce, expired timestamp. Review your credentials"
+              }
+    404:
+      description: User is unauthorized to the required resource.
+settings:
+  authorizationUri: https://oAuthEndpoint/oauth2/authorize
+  accessTokenUri: https://oAuthEndpoint/oauth2/token
+  authorizationGrants: [ client_credentials ]

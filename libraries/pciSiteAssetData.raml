@@ -1,0 +1,355 @@
+#%RAML 1.0 Library
+usage: PCI Asset report shared types for REMC CHP and Agent
+
+uses:
+  core: ifsf-core-v1.0.0/core.raml
+
+types:
+  siteAssetData:
+    properties:
+      id:
+        description: report identifier
+        type: string
+        maxLength: 80
+      dateTimeStamp:
+        type: datetime
+        description: timestamp of when the data was recorded
+      site: core.site
+      attendedMode:
+        description: Describes which attended modes are supported. Can be used
+          to assess the risk of skimming on site.
+        type: string
+        enum: [partialUnattended, unattended, attended]
+      posTerminals:
+        type: posTerminal[]
+        required: false
+      merchantIDs:
+        type: core.siteID[]
+        description:
+          Also known as merchant number. This usually contains one ID for
+          each card acquirer. Merchant IDs may change if a site is sold or other
+          business type event occurs.
+      dispenserHardwareInterfaces:
+        type: dispenserHardwareInterface[]
+        required: false
+        description:
+          describes the hardware interface between the dispensers and the POS,
+          usually FDC hardware. If this data is not available, use "other" as
+          the deviceIdentifier type and enter "Data not available" as a
+          description.
+      dispensers:
+        required: false
+        type: dispenser[]
+        description: describes each dispenser
+      devices:
+        type: genericDevice[]
+        required: false
+      secureDataEntryDevices:
+        type: secureDataEntryDevice[]
+        required: false
+
+  configurationProtocol:
+    description: Describes how the data was derived.  Some form of automated
+      collection is preferred over manual keyed methods.
+    enum: [static, dhcp, vpn]
+
+  derivation:
+    description: |
+      Describes how the data was derived.  Some form of automated collection is
+      preferred over manual keyed methods.
+    enum: [ physicalConfig, osCall, libraryCall, secureManualKey, manualKey,
+      none, other ]
+
+  deviceCategorySoftEnum:
+    type: deviceCategoryEnum | string
+
+  deviceCategoryEnum:
+    enum: [ receiptPrinter, journalPrinter, secureDataEntry, scanner,
+      contactlessReader, checkReader, moneyOrder, carwash, lottery,
+      price sign, safe, backOffice, tankGauge, cardReader, cardAcceptor,
+      radioFrequency ]
+
+  modelName:
+    type: string
+    maxLength: 50
+
+  vendor:
+    type: string
+    maxLength: 50
+
+  version:
+    type: string
+    maxLength: 50
+
+  sysID:
+    type: integer
+    minimum: 0
+    maximum: 999
+
+  deviceIdentifier:
+    type: core.extensible
+    properties:
+      derivation:
+        type: derivation
+        description: >
+          Describes how the data was derived.  Some form of automated
+          collection is preferred over manual keyed methods
+      type:
+        description: >
+          Describes the type of tracking information that is being
+          reported.  Whatever the type, this data is expected to be sufficiently
+          unique to track the asset within all the companies installations by vendor
+        type: string
+        enum: [ serialNumber, macAddress, processorID, assetTag, other ]
+      description:
+        type: string
+        description: >
+          Describe the data reported in the tracking information element.
+          This attribute would be expected to contain data if the type attribute
+          is of type "other"
+        minLength: 1
+        maxLength: 128
+
+  dispenserHardwareInterface:
+    type: core.extensible
+    properties:
+      sysID:
+        type: integer
+        minimum: 1
+        maximum: 99
+        description: >
+          Identifier for this HardwareInterface.  This is intended as a system
+          identifier, i.e. DB key, not the PCI device Identifier.
+      dispenserIDs:
+        type: array
+        items:
+          type: integer
+          minimum: 1
+          maximum: 99
+      physicalDeviceInfo: physicalDeviceInfo
+
+  dispenser:
+    type: core.extensible
+    properties:
+      sysID:
+        type: integer
+        minimum: 1
+        maximum: 99
+        description: >
+          Identifier for this dispenser. This is intended as a system
+          identifier, i.e. DB key, not the PCI device Identifier.
+      isBlender: boolean
+      physicalDeviceInfo: physicalDeviceInfo
+      devices?: genericDevice[]
+      secureDataEntryDevices?: secureDataEntryDevice[]
+
+  middlewareComponent:
+    type: core.extensible
+    properties:
+      vendor?: vendor
+      model?: modelName
+      softwareVersion?: version
+
+  posTerminal:
+    type: core.extensible
+    properties:
+      sysID:
+        type: integer
+        minimum: 0
+        maximum: 999
+      physicalDeviceInfo: physicalDeviceInfo
+      applicationStartTime:
+        type: datetime
+        required: false
+        description: >
+          timestamp of when the application was last started.  A timestamp of 0
+          indicates the information is not known.
+      middlewareComponents?: middlewareComponent[]
+      devices?: genericDevice[]
+      secureDataEntryDevices?: secureDataEntryDevice[]
+
+  secureDataEntryDevice:
+    type: genericDevice
+    properties:
+      encryptionCapabilities:
+        type: array
+        items: encryptionCapability
+        maxItems: 16
+      integratedContactlessReader:
+        type: boolean
+      emvData: emvData
+
+  genericDevice:
+    type: core.extensible
+    properties:
+      physicalDeviceInfo: physicalDeviceInfo
+      otherDeviceInfo:
+        type: array
+        items: peripheralDeviceInfo | integratedDeviceInfo | networkedDeviceInfo
+        minItems: 1
+      sysID: sysID
+      category: deviceCategorySoftEnum
+      location:
+        type: string
+        enum: ["inside","outside"]
+
+  deviceInfoItem:
+    type: core.extensible
+    discriminator: kind
+    properties:
+      kind: string
+
+  peripheralDeviceInfo:
+    type: deviceInfoItem
+    discriminatorValue: peripheral
+    properties:
+      connectionType: connectionTypeEnum | string
+
+  integratedDeviceInfo:
+    type: deviceInfoItem
+    discriminatorValue: networked
+    properties:
+      primaryDevice: deviceCategorySoftEnum
+
+  networkedDeviceInfo:
+    type: deviceInfoItem
+    discriminatorValue: networked
+    properties:
+      ipConfiguration:
+        type: array
+        items: ipv4Configuration | ipv6Configuration
+      connectionType:
+        type: connectionTypeEnum | string
+      macAddress: core.macAddress
+
+  ipv4Configuration:
+    type: core.extensible
+    properties:
+      address: core.ipv4Address
+      configurationProtocol: configurationProtocol
+      netmask:
+        type: core.ipv4Address
+        description: Subnet mask of the interface
+      dhcpServerAddress: core.ipv4Address
+      dnsServerAddresses:
+        required: false
+        type: core.ipv4Address[]
+        description: Address for any DNS server used by the device
+      defaultGateway:
+        required: false
+        type: core.ipv4Address
+        description: Default gateway of the interface.
+
+  ipv6Configuration:
+    type: core.extensible
+    properties:
+      address: core.ipv6Address
+      configurationProtocol: configurationProtocol
+      netmask:
+        type: core.ipv6Address
+        description: Subnet mask of the interface
+      dhcpServerAddress?: core.ipv6Address
+      dnsServerAddresses:
+        required: false
+        type: core.ipv6Address[]
+        description: Address for any DNS server used by the device
+      defaultGateway:
+        required: false
+        type: core.ipv6Address
+        description: Default gateway of the interface.
+
+  connectionTypeEnum:
+    enum: [rs232, rs485, ethernet, usb, powerline, fiber,
+      bluetooth, wifi, zigbee, cellular, satellite,
+      wired, wireless]
+
+  versionInfo:
+    type: core.extensible
+    properties:
+      vendor?: vendor
+      model?: modelName
+      softwareVersion?: version
+      firmwareVersion?: version
+      osVersion?: version
+      hardwareVersion?: version
+
+  encryptionCapability:
+    type: core.extensible
+    properties:
+      slot:
+        type: integer
+        description: Slot identifier for the key
+        minimum: 0
+      keyFunctions:
+        description:
+          Describe the purposes of the key.  I.e. PIN, P2PE, some other purpose.
+        type: array
+        items: core.giskeKeyUsage | naxmlKeyFunctionEnum | string
+      algorithms:
+        description: What algorithm are used, i.e. 3DES, AES, DES, etc.
+        type: array
+        items: core.cryptoAlgorithms | string
+      giskeKeyHeader:
+        type: core.giskeKeyHeader
+        required: false
+      description:
+        description:
+          Use this description to explain any unique functions or capabilities
+          of this key instance.  If "other" is used for KeyFunction or Algorithm
+          an explanation should be entered here.
+        type: string
+
+  naxmlKeyFunctionEnum:
+      enum: [pin, p2pe, transport, other]
+
+  emvData:
+    type: core.extensible
+    properties:
+      l1Data:
+        description: Hardware LOA information
+        type: kernelData
+        required: false
+      l2Data:
+        description: Kernel LOA information
+        type: kernelData
+        required: false
+      emvContactlessKernels:
+        description: Describe each brand's EMVContactless kernel
+        type: kernelData[]
+        required: false
+      type:
+        description: Describe EMV input capabilities
+        enum: [contact, contactless, contactAndContactless, none]
+
+  kernelData:
+    type: core.extensible
+    properties:
+      name:
+        type: string
+        required: false
+        minLength: 1
+        maxLength: 32
+      version:
+        type: string
+        required: false
+        minLength: 1
+        maxLength: 32
+      expirationDate: date-only
+      derivation:
+        type: derivation
+        description:
+          Describe how the data for the Kernel Data Type was obtained.  Some
+          form of automated collection is preferred over manual keyed methods.
+
+  physicalDeviceInfo:
+    type: core.extensible
+    properties:
+      deviceIdentifiers:
+        type: deviceIdentifier[]
+        description:
+          Unique number (e.g. serial number) used to track assets at a site for
+          the purposes of "major oil" asset gathering and potential PCI
+          compliance (Sect. 9.9.1 in PCI 3.1) solutions.  Multiple identifiers
+          may be described with the expectation they will be differentiated by
+          the attributes type and description.
+      versionInfo: versionInfo

@@ -1,0 +1,227 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "site.raml",
+	"definitions": {
+		"siteID": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"maxLength": 10
+				},
+				"id": {
+					"type": "string",
+					"maxLength": 20
+				}
+			},
+			"required": [
+				"type",
+				"id"
+			]
+		},
+		"site": {
+			"allOf": [
+				{
+					"$ref": "extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"uniqueID": {
+							"description": "If the ID is issued by the CHP, this ID is universally unique. If the ID is issued by the agent, two sites controlled by the agent cannot have the same ID.\n",
+							"type": "string",
+							"maxLength": 40
+						},
+						"siteIDs": {
+							"allOf": [
+								{
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"$ref": "#/definitions/siteID"
+									}
+								},
+								{
+									"description": "a site may have multiple IDs for different purposes"
+								}
+							]
+						},
+						"locationID": {
+							"description": "identifier for the specific location. This ID may remain consistent even if the site ownership changes.",
+							"type": "string",
+							"maxLength": 40
+						},
+						"name": {
+							"description": "the site name",
+							"type": "string",
+							"maxLength": 80
+						},
+						"addressLines": {
+							"type": "array",
+							"maxItems": 3,
+							"items": {
+								"allOf": [
+									{
+										"type": "string"
+									},
+									{
+										"type": "string",
+										"maxLength": 80
+									}
+								]
+							}
+						},
+						"city": {
+							"type": "string",
+							"maxLength": 80
+						},
+						"postalCode": {
+							"type": "string",
+							"maxLength": 20
+						},
+						"subregion": {
+							"description": "Second level of political division of a country, usually county, department or municipality. If the site were in USA, this property would contain the name of the county.",
+							"type": "string",
+							"maxLength": 80
+						},
+						"region": {
+							"description": "First level of political division of a country, usually state or province. If the site were in USA, this property would contain the name of the state.",
+							"type": "string",
+							"maxLength": 80
+						},
+						"country": {
+							"allOf": [
+								{
+									"$ref": "country.json#/definitions/codeSoftEnum"
+								},
+								{
+									"description": "we need the country code in order to disambiguate"
+								}
+							]
+						},
+						"phoneNumbers": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"type": {
+										"type": "string",
+										"enum": [
+											"mobile",
+											"work",
+											"home",
+											"main",
+											"fax",
+											"pager",
+											"other"
+										]
+									},
+									"number": {
+										"type": "string",
+										"maxLength": 20
+									}
+								}
+							}
+						},
+						"laguages": {
+							"type": "array",
+							"items": {
+								"$ref": "language.json#/definitions/codeSoftEnum"
+							}
+						},
+						"localCurrencies": {
+							"allOf": [
+								{
+									"type": "array",
+									"items": {
+										"$ref": "currency.json#/definitions/codeSoftEnum"
+									}
+								},
+								{
+									"description": "currencies issued by the local government"
+								}
+							]
+						},
+						"foreignCurrencies": {
+							"allOf": [
+								{
+									"type": "array",
+									"items": {
+										"$ref": "currency.json#/definitions/codeSoftEnum"
+									}
+								},
+								{
+									"description": "currencies issued by foreign governments"
+								}
+							]
+						},
+						"geoCoordinates": {
+							"allOf": [
+								{
+									"$ref": "geoCoordinates.json#/definitions/geoCoordinates"
+								},
+								{
+									"description": "The lat/lon coordinates for the site."
+								}
+							]
+						},
+						"brands": {
+							"description": "Describes the site branding (e.g. BP, Esso, OMV, Q8, Shell, Statoil, Total) may be different than the site name.  If there is more than one brand at the site, all brands should be included.\n",
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"example": [
+								"Esso",
+								"On The Run",
+								"Shell",
+								"Select"
+							],
+							"structuredExample": {
+								"value": "[\n  \"Esso\",\n  \"On The Run\",\n  \"Shell\",\n  \"Select\"\n]",
+								"strict": true,
+								"name": null,
+								"structuredValue": [
+									"Esso",
+									"On The Run",
+									"Shell",
+									"Select"
+								]
+							}
+						},
+						"tags": {
+							"description": "list of tag words",
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"example": [
+								"carwash",
+								"oilservice",
+								"truckstop",
+								"cstore",
+								"atm"
+							],
+							"structuredExample": {
+								"value": "[\n  \"carwash\",\n  \"oilservice\",\n  \"truckstop\",\n  \"cstore\",\n  \"atm\"\n]",
+								"strict": true,
+								"structuredValue": [
+									"carwash",
+									"oilservice",
+									"truckstop",
+									"cstore",
+									"atm"
+								]
+							}
+						}
+					},
+					"required": [
+						"uniqueID",
+						"siteIDs",
+						"name",
+						"country"
+					]
+				}
+			]
+		}
+	}
+}

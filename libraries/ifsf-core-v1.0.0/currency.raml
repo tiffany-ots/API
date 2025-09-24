@@ -1,0 +1,208 @@
+#%RAML 1.0 Library
+
+types:
+  codeSoftEnum: codeEnum | string
+
+  codeEnum:
+    description: ISO-4217 / UN/ECE REC 09 Codes
+    type: string
+    enum:
+      [
+        "ADP",   #Andorran Peseta
+        "AED",   #UAE Dirham
+        "AFA",   #Afghani
+        "ALL",   #Leck
+        "AMD",   #Armenian Dram
+        "ANG",   #Netherlands Antillan Guilder
+        "AOA",   #Kwanza
+        "ARS",   #Argentine Peso
+        "ATS",   #Schilling
+        "AUD",   #Australian Dollar
+        "AWG",   #Aruban Guilder
+        "AZM",   #Azerbaijanian Manat
+        "BAM",   #Convertible Marks
+        "BBD",   #Barbados Dollar
+        "BDT",   #Taka
+        "BEF",   #Belgian Franc
+        "BGL",   #Lev
+        "BGN",   #Bulgarian Lev
+        "BHD",   #Bahraini Dinar
+        "BIF",   #Burundi Franc
+        "BMD",   #Bermudian Dollar
+        "BND",   #Brunei Dollar
+        "BOB",   #Boliviano
+        "BOV",   #Mvdol
+        "BRL",   #Brazilian Real
+        "BSD",   #Bahamian Dollar
+        "BTN",   #Ngultrum
+        "BWP",   #Pula
+        "BYR",   #Belarussian Ruble
+        "BZD",   #Belize Dollar
+        "CAD",   #Canadian Dollar
+        "CDF",   #Franc Congolais
+        "CHF",   #Swiss Franc
+        "CLF",   #Unidades de fomento
+        "CLP",   #Chilean Peso
+        "CNY",   #Yuan Renminbi
+        "COP",   #Colombian Peso
+        "CRC",   #Costa Rican Colon
+        "CUP",   #Cuban Peso
+        "CVE",   #Cape Verde Escudo
+        "CYP",   #Cyprus Pound
+        "CZK",   #Czech Koruna
+        "DEM",   #Deutsche Mark
+        "DJF",   #Djibouti Franc
+        "DKK",   #Danish Krone
+        "DOP",   #Dominican Peso
+        "DZD",   #Algerian Dinar
+        "ECS",   #Sucre
+        "ECV",   #Unidad de Valor Constante (UVC)
+        "EEK",   #Kroon
+        "EGP",   #Egyptian Pound
+        "ERN",   #Nakfa
+        "ESP",   #Spanish Peseta
+        "ETB",   #Ethiopian Birr
+        "EUR",   #euro
+        "FIM",   #Markka
+        "FJD",   #Fiji Dollar
+        "FKP",   #Falkland Islands Pound
+        "FRF",   #French Franc
+        "GBP",   #Pound Sterling
+        "GEL",   #Lari
+        "GHC",   #Cedi
+        "GIP",   #Gibraltar Pound
+        "GMD",   #Dalasi
+        "GNF",   #Guinea Franc
+        "GRD",   #Drachma
+        "GTQ",   #Quetzal
+        "GWP",   #Guinea-Bissau Peso
+        "GYD",   #Guyana Dollar
+        "HKD",   #Hong Kong Dollar
+        "HNL",   #Lempira
+        "HRK",   #Croatian kuna
+        "HTG",   #Gourde
+        "HUF",   #Forint
+        "IDR",   #Rupiah
+        "IEP",   #Irish Pound
+        "ILS",   #New Israeli Sheqel
+        "INR",   #Indian Rupee
+        "IQD",   #Iraqi Dinar
+        "IRR",   #Iranian Rial
+        "ISK",   #Iceland Krona
+        "ITL",   #Italian Lira
+        "JMD",   #Jamaican Dollar
+        "JOD",   #Jordanian Dinar
+        "JPY",   #Yen
+        "KES",   #Kenyan Shilling
+        "KGS",   #Som
+        "KHR",   #Riel
+        "KMF",   #Comoro Franc
+        "KPW",   #North Korean Won
+        "KRW",   #Won
+        "KWD",   #Kuwaiti Dinar
+        "KYD",   #Cayman Islands Dollar
+        "KZT",   #Tenge
+        "LAK",   #Kip
+        "LBP",   #Lebanese Pound
+        "LKR",   #Sri Lanka Rupee
+        "LRD",   #Liberian Dollar
+        "LSL",   #Loti
+        "LTL",   #Lithuanian Litus
+        "LUF",   #Luxembourg Franc
+        "LVL",   #Latvian Lats
+        "LYD",   #Lybian Dinar
+        "MAD",   #Moroccan Dirham
+        "MDL",   #Moldovan Leu
+        "MGF",   #Malagasy Franc
+        "MKD",   #Denar
+        "MMK",   #Kyat
+        "MNT",   #Tugrik
+        "MOP",   #Pataca
+        "MRO",   #Ouguiya
+        "MTL",   #Maltese Lira
+        "MUR",   #Mauritius Rupee
+        "MVR",   #Rufiyaa
+        "MWK",   #Kwacha
+        "MXN",   #Mexican Peso
+        "MXV",   #Mexican Unidad de Inversion (UDI)
+        "MYR",   #Malaysian Ringgit
+        "MZM",   #Metical
+        "NAD",   #Namibia Dollar
+        "NGN",   #Naira
+        "NIO",   #Cordoba Oro
+        "NLG",   #Netherlands Guilder
+        "NOK",   #Norvegian Krone
+        "NPR",   #Nepalese Rupee
+        "NZD",   #New Zealand Dollar
+        "OMR",   #Rial Omani
+        "PAB",   #Balboa
+        "PEN",   #Nuevo Sol
+        "PGK",   #Kina
+        "PHP",   #Philippine Peso
+        "PKR",   #Pakistan Rupee
+        "PLN",   #Zloty
+        "PTE",   #Portuguese Escudo
+        "PYG",   #Guarani
+        "QAR",   #Qatari Rial
+        "ROL",   #Leu
+        "RUB",   #Russian Ruble
+        "RUR",   #Russian Ruble
+        "RWF",   #Rwanda Franc
+        "SAR",   #Saudi Riyal
+        "SBD",   #Solomon Islands Dollar
+        "SCR",   #Seychelles Rupee
+        "SDD",   #Sudanese Dinar
+        "SEK",   #Swedish Krona
+        "SGD",   #Singapore Dollar
+        "SHP",   #Saint Helena Pound
+        "SIT",   #Tolar
+        "SKK",   #Slovak Koruna
+        "SLL",   #Leone
+        "SOS",   #Somali Shilling
+        "SRG",   #Suriname Guilder
+        "STD",   #Dobra
+        "SVC",   #El Salvador Colon
+        "SYP",   #Syrian Pound
+        "SZL",   #Lilangeni
+        "THB",   #Baht
+        "TJS",   #Somoni
+        "TMM",   #Manat
+        "TND",   #Tunisian Dinar
+        "TOP",   #Pa´anga
+        "TPE",   #Timor Escudo
+        "TRL",   #Turkish Lira
+        "TTD",   #Trinidad and Tobago Dollar
+        "TWD",   #New Taiwan Dollar
+        "TZS",   #Tanzanian Shilling
+        "UAH",   #Hryvnia
+        "UGX",   #Uganda Shilling
+        "USD",   #US Dollar
+        "USN",   #US Dollar (Next day)
+        "USS",   #US Dollar (Same day)
+        "UYU",   #Peso Uruguayo
+        "UZS",   #Uzbekistan Sum
+        "VEB",   #Bolivar
+        "VND",   #Dong
+        "VUV",   #Vatu
+        "WST",   #Tala
+        "XAF",   #CFA Franc BEAC
+        "XAG",   #Silver
+        "XAU",   #Gold
+        "XBA",   #European Composite Unit (EURCO), European Monetary Unit (E.M.U.-6)
+        "XBB",   #European Unit of Account 9 (E.U.A.-9)
+        "XBC",   #European Unit of Account 17 (E.U.A.-17)
+        "XCD",   #East Caribbean Dollar
+        "XDR",   #SDR
+        "XFO",   #Gold-Franc
+        "XFU",   #UIC-Franc
+        "XOF",   #CFA Franc BCEAO
+        "XPD",   #Palladium
+        "XPF",   #CFP Franc
+        "XPT",   #Platinum
+        "XTS",   #Codes Specifically reserved for testing purposes
+        "YER",   #Yemeni Rial
+        "YUM",   #Yugoslavian Dinar
+        "ZAR",   #South Africa Rand
+        "ZMK",   #Kwacha
+        "ZWD"    #Zimbabwe Dollar
+      ]

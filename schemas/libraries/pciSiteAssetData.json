@@ -1,0 +1,881 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "pciSiteAssetData.raml",
+	"definitions": {
+		"configurationProtocol": {
+			"description": "Describes how the data was derived.  Some form of automated collection is preferred over manual keyed methods.",
+			"type": "string",
+			"enum": [
+				"static",
+				"dhcp",
+				"vpn"
+			]
+		},
+		"connectionType": {
+			"type": "string",
+			"enum": [
+				"rs232",
+				"rs485",
+				"ethernet",
+				"usb",
+				"powerline",
+				"fiber",
+				"bluetooth",
+				"wifi",
+				"zigbee",
+				"cellular",
+				"satellite",
+				"wired",
+				"wireless"
+			]
+		},
+		"connectionTypeEnum": {
+			"type": "string",
+			"enum": [
+				"rs232",
+				"rs485",
+				"ethernet",
+				"usb",
+				"powerline",
+				"fiber",
+				"bluetooth",
+				"wifi",
+				"zigbee",
+				"cellular",
+				"satellite",
+				"wired",
+				"wireless"
+			]
+		},
+		"derivation": {
+			"description": "Describes how the data was derived.  Some form of automated collection is\npreferred over manual keyed methods.\n",
+			"type": "string",
+			"enum": [
+				"physicalConfig",
+				"osCall",
+				"libraryCall",
+				"secureManualKey",
+				"manualKey",
+				"none",
+				"other"
+			]
+		},
+		"deviceCategoryEnum": {
+			"type": "string",
+			"enum": [
+				"receiptPrinter",
+				"journalPrinter",
+				"secureDataEntry",
+				"scanner",
+				"contactlessReader",
+				"checkReader",
+				"moneyOrder",
+				"carwash",
+				"lottery",
+				"price sign",
+				"safe",
+				"backOffice",
+				"tankGauge",
+				"cardReader",
+				"cardAcceptor",
+				"radioFrequency"
+			]
+		},
+		"deviceCategorySoftEnum": {
+			"anyOf": [
+				{
+					"type": "string"
+				},
+				{
+					"$ref": "#/definitions/deviceCategoryEnum"
+				}
+			]
+		},
+		"deviceIdentifier": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/core.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"derivation": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/derivation"
+								},
+								{
+									"description": "Describes how the data was derived.  Some form of automated collection is preferred over manual keyed methods\n"
+								}
+							]
+						},
+						"type": {
+							"description": "Describes the type of tracking information that is being reported.  Whatever the type, this data is expected to be sufficiently unique to track the asset within all the companies installations by vendor\n",
+							"type": "string",
+							"enum": [
+								"serialNumber",
+								"macAddress",
+								"processorID",
+								"assetTag",
+								"other"
+							]
+						},
+						"description": {
+							"description": "Describe the data reported in the tracking information element. This attribute would be expected to contain data if the type attribute is of type \"other\"\n",
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 128
+						}
+					},
+					"required": [
+						"derivation",
+						"type",
+						"description"
+					]
+				}
+			]
+		},
+		"deviceInfo": {
+			"properties": {
+				"kind": {
+					"type": "string"
+				}
+			},
+			"discriminator": "kind"
+		},
+		"dispenser": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"sysID": {
+							"description": "Identifier for this dispenser. This is intended as a system identifier, i.e. DB key, not the PCI device Identifier.\n",
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 99
+						},
+						"isBlender": {
+							"type": "boolean"
+						},
+						"physicalDeviceInfo": {
+							"$ref": "#/definitions/physicalDeviceInfo"
+						},
+						"devices": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/genericDevice"
+							}
+						},
+						"secureDataEntryDevices": {
+							"$ref": "#/definitions/secureDataEntryDevice"
+						}
+					},
+					"required": [
+						"sysID",
+						"isBlender"
+					]
+				}
+			]
+		},
+		"dispenserHardwareInterface": {
+			"properties": {
+				"sysID": {
+					"description": "Identifier for this HardwareInterface.  This is intended as a system identifier, i.e. DB key, not the PCI device Identifier.\n",
+					"type": "integer",
+					"minimum": 1,
+					"maximum": 99
+				},
+				"dispenserIDs": {
+					"type": "array",
+					"items": {
+						"type": "integer",
+						"minimum": 1,
+						"maximum": 99
+					}
+				},
+				"physicalDeviceInfo": {
+					"$ref": "#/definitions/physicalDeviceInfo"
+				}
+			}
+		},
+		"emvData": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"l1Data": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/kernelData"
+								},
+								{
+									"description": "Hardware LOA information"
+								}
+							]
+						},
+						"l2Data": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/kernelData"
+								},
+								{
+									"description": "Hardware LOA information"
+								}
+							]
+						},
+						"emvContactlessKernels": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/kernelData"
+								},
+								{
+									"description": "Describe each brand's EMVContactless kernel"
+								}
+							]
+						},
+						"type": {
+							"description": "Describe EMV input capabilities",
+							"type": "string",
+							"enum": [
+								"contact",
+								"contactless",
+								"contactAndContactless",
+								"none"
+							]
+						}
+					}
+				}
+			]
+		},
+		"encryptionCapability": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"slot": {
+							"description": "Slot identifier for the key",
+							"type": "integer",
+							"minimum": 0
+						},
+						"keyFunctions": {
+							"type": "array",
+							"items": {
+								"allOf": [
+									{
+										"anyOf": [
+											{
+												"type": "string"
+											},
+											{
+												"$ref": "#/definitions/naxmlKeyFunctionEnum"
+											},
+											{
+												"$ref": "ifsf-core-v1.0.0/core.json#/definitions/giskeKeyUsage"
+											}
+										]
+									},
+									{
+										"description": "Describe the purposes of the key.  I.e. PIN, P2PE, some other purpose."
+									}
+								]
+							}
+						},
+						"algorithms": {
+							"description": "What algorithm are used, i.e. 3DES, AES, DES, etc.",
+							"type": "array",
+							"items": {
+								"anyOf": [
+									{
+										"type": "string"
+									},
+									{
+										"$ref": "ifsf-core-v1.0.0/core.json#/definitions/cryptoAlgorithms"
+									}
+								]
+							}
+						},
+						"giskeKeyHeader": {
+							"$ref": "ifsf-core-v1.0.0/core.json#definitions/giskeKeyHeader"
+						},
+						"description": {
+							"description": "Use this description to explain any unique functions or capabilities of this key instance.  If \"other\" is used for KeyFunction or Algorithm an explanation should be entered here.",
+							"type": "string"
+						}
+					},
+					"required": [
+						"slot",
+						"keyFunctions",
+						"algorithms",
+						"description"
+					]
+				}
+			]
+		},
+		"config": {
+			"allOf": [
+				{
+					"$ref": "remcTypes.json#/definitions/remcRecord"
+				},
+				{
+					"examples": [
+						{
+							"value": "{\n  \"id\": \"20150101081500-000128\",\n  \"created\": \"2015-01-02T03:25:32Z\",\n  \"code\": \"IFSF-FP:01h\",\n  \"name\": \"FP_Name\",\n  \"value\": \"FP01\"\n}",
+							"strict": true,
+							"name": "fuelingPoint",
+							"structuredValue": {
+								"id": "20150101081500-000128",
+								"created": "2015-01-02T03:25:32Z",
+								"code": "IFSF-FP:01h",
+								"name": "FP_Name",
+								"value": "FP01"
+							}
+						},
+						{
+							"value": "{\n  \"id\": \"20150101081500-000129\",\n  \"created\": \"2015-01-02T03:26:32-01:00\",\n  \"code\": \"IFSF-LN:01h\",\n  \"name\": \"Pr_Id\",\n  \"value\": \"3\"\n}",
+							"strict": true,
+							"name": "nozzle",
+							"structuredValue": {
+								"id": "20150101081500-000129",
+								"created": "2015-01-02T03:26:32-01:00",
+								"code": "IFSF-LN:01h",
+								"name": "Pr_Id",
+								"value": "3"
+							}
+						}
+					],
+					"properties": {
+						"code": {
+							"description": "configuration parameter database locator",
+							"type": "string"
+						},
+						"name": {
+							"description": "configuration parameter readable name",
+							"type": "string"
+						},
+						"value": {
+							"description": "parameter value",
+							"type": "string"
+						}
+					},
+					"required": [
+						"code",
+						"value"
+					]
+				}
+			]
+		},
+		"integratedDeviceInfo": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/deviceInfo"
+				},
+				{
+					"properties": {
+						"primaryDevice": {
+							"$ref": "#/definitions/deviceCategorySoftEnum"
+						}
+					},
+					"required": [
+						"primaryDevice"
+					],
+					"discriminatorValue": "integrated"
+				}
+			]
+		},
+		"ipv4Configuration": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"address": {
+							"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv4Address"
+						},
+						"configurationProtocol": {
+							"$ref": "#/definitions/configurationProtocol"
+						},
+						"netmask": {
+							"allOf": [
+								{
+									"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv4Address"
+								},
+								{
+									"description": "Subnet mask of the interface"
+								}
+							]
+						},
+						"dhcpServerAddress": {
+							"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv4Address"
+						},
+						"dnsServerAddresses": {
+							"allOf": [
+								{
+									"type": "array",
+									"items": {
+										"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv4Address"
+									}
+								},
+								{
+									"description": "Address for any DNS server used by the device"
+								}
+							]
+						},
+						"defaultGateway": {
+							"allOf": [
+								{
+									"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv4Address"
+								},
+								{
+									"description": "Default gateway of the interface."
+								}
+							]
+						}
+					},
+					"required": [
+						"address",
+						"configurationProtocol",
+						"netmask"
+					]
+				}
+			]
+		},
+		"ipv6Configuration": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"address": {
+							"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv6Address"
+						},
+						"configurationProtocol": {
+							"$ref": "#/definitions/configurationProtocol"
+						},
+						"netmask": {
+							"allOf": [
+								{
+									"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv6Address"
+								},
+								{
+									"description": "Subnet mask of the interface"
+								}
+							]
+						},
+						"dhcpServerAddress": {
+							"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv6Address"
+						},
+						"dnsServerAddresses": {
+							"allOf": [
+								{
+									"type": "array",
+									"items": {
+										"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv6Address"
+									}
+								},
+								{
+									"description": "Address for any DNS server used by the device"
+								}
+							]
+						},
+						"defaultGateway": {
+							"allOf": [
+								{
+									"$ref": "ifsf-core-v1.0.0/core.json#/definitions/ipv6Address"
+								},
+								{
+									"description": "Default gateway of the interface."
+								}
+							]
+						}
+					},
+					"required": [
+						"address",
+						"configurationProtocol",
+						"netmask"
+					]
+				}
+			]
+		},
+		"kernelData": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"name": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 32
+						},
+						"version": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 32
+						},
+						"expirationDate": {
+							"type": "string",
+							"format": "date-only"
+						},
+						"derivation": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/derivation"
+								},
+								{
+									"description": "Describe how the data for the Kernel Data Type was obtained.  Some form of automated collection is preferred over manual keyed methods."
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"middlewareComponent": {
+			"properties": {
+				"vendor": {
+					"$ref": "#/definitions/vendor"
+				},
+				"model": {
+					"$ref": "#/definitions/model"
+				},
+				"softwareVersion": {
+					"$ref": "#/definitions/version"
+				}
+			}
+		},
+		"model": {
+			"type": "string",
+			"maxLength": 50
+		},
+		"modelName": {
+			"type": "string",
+			"maxLength": 50
+		},
+		"naxmlKeyFunctionEnum": {
+			"type": "string",
+			"enum": [
+				"pin",
+				"p2pe",
+				"transport",
+				"other"
+			]
+		},
+		"networkedDeviceInfo": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/deviceInfo"
+				},
+				{
+					"properties": {
+						"ipConfiguration": {
+							"type": "array",
+							"items": {
+								"allOf": [
+									{
+										"$ref": "#/definitions/ipv4Configuration"
+									},
+									{
+										"$ref": "#/definitions/ipv6Configuration"
+									}
+								]
+							}
+						},
+						"connectionType": {
+							"allOf": [
+								{
+									"type": "string"
+								},
+								{
+									"$ref": "#/definitions/connectionType"
+								}
+							]
+						},
+						"macAddress": {
+							"$ref": "ifsf-core-v1.0.0/core.json#/definitions/macAddress"
+						}
+					},
+					"required": [
+						"ipConfiguration",
+						"connectionType",
+						"macAddress"
+					],
+					"discriminatorValue": "networked"
+				}
+			]
+		},
+		"peripheralDeviceInfo": {
+			"allOf": [
+				{
+					"type": "string"
+				},
+				{
+					"$ref": "#/definitions/connectionTypeEnum"
+				},
+				{
+					"discriminatorValue": "peripheral"
+				}
+			]
+		},
+		"physicalDeviceInfo": {
+			"properties": {
+				"deviceIdentifiers": {
+					"allOf": [
+						{
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/deviceIdentifier"
+							}
+						},
+						{
+							"description": "Unique number (e.g. serial number) used to track assets at a site for the purposes of \"major oil\" asset gathering and potential PCI compliance (Sect. 9.9.1 in PCI 3.1) solutions.  Multiple identifiers may be described with the expectation they will be differentiated by the attributes type and description."
+						}
+					]
+				},
+				"versionInfo": {
+					"$ref": "#/definitions/versionInfo"
+				}
+			}
+		},
+		"posTerminal": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"sysID": {
+							"type": "integer",
+							"minimum": 0,
+							"maximum": 999
+						},
+						"physicalDeviceInfo": {
+							"$ref": "#/definitions/physicalDeviceInfo"
+						},
+						"applicationStartTime": {
+							"description": "timestamp of when the application was last started.  A timestamp of 0 indicates the information is not known.\n",
+							"type": "string",
+							"format": "date-time"
+						},
+						"middlewareComponents": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/middlewareComponent"
+							}
+						},
+						"devices": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/genericDevice"
+							}
+						},
+						"secureDataEntryDevices": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/secureDataEntryDevice"
+							}
+						}
+					},
+					"required": [
+						"sysID",
+						"physicalDeviceInfo"
+					]
+				}
+			]
+		},
+		"secureDataEntryDevice": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/genericDevice"
+				},
+				{
+					"properties": {
+						"encryptionCapabilities": {
+							"type": "array",
+							"maxItems": 16,
+							"items": {
+								"$ref": "#/definitions/encryptionCapability"
+							}
+						},
+						"integratedContactlessReader": {
+							"type": "boolean"
+						},
+						"emvData": {
+							"$ref": "#/definitions/emvData"
+						}
+					},
+					"required": [
+						"encryptionCapabilities",
+						"integratedContactlessReader",
+						"emvData"
+					]
+				}
+			]
+		},
+		"siteAssetData": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"description": "report identifier",
+					"type": "string",
+					"maxLength": 80
+				},
+				"dateTimeStamp": {
+					"description": "timestamp of when the data was recorded",
+					"type": "string",
+					"format": "date-time"
+				},
+				"site": {
+					"$ref": "ifsf-core-v1.0.0/core.json#/definitions/site"
+				},
+				"attendedMode": {
+					"description": "Describes which attended modes are supported. Can be used to assess the risk of skimming on site.",
+					"type": "string",
+					"enum": [
+						"partialUnattended",
+						"unattended",
+						"attended"
+					]
+				},
+				"posTerminals": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/posTerminal"
+					}
+				},
+				"merchantIDs": {
+					"description": "Also known as merchant number. This usually contains one ID for each card acquirer. Merchant IDs may change if a site is sold or other business type event occurs.",
+					"type": "array",
+					"items": {
+						"$ref": "ifsf-core-v1.0.0/core.json#/definitions/siteID"
+					}
+				},
+				"dispenserHardwareInterfaces": {
+					"description": "describes the hardware interface between the dispensers and the POS, usually FDC hardware. If this data is not available, use \"other\" as the deviceIdentifier type and enter \"Data not available\" as a description.",
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/dispenserHardwareInterface"
+					}
+				},
+				"dispensers": {
+					"description": "describes each dispenser",
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/dispenser"
+					}
+				},
+				"devices": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/genericDevice"
+					}
+				},
+				"secureDataEntryDevices": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/secureDataEntryDevice"
+					}
+				}
+			},
+			"required": [
+				"id",
+				"dateTimeStamp",
+				"site",
+				"attendedMode",
+				"merchantIDs"
+			]
+		},
+		"sysID": {
+			"type": "integer",
+			"minimum": 0,
+			"maximum": 999
+		},
+		"vendor": {
+			"type": "string",
+			"maxLength": 50
+		},
+		"version": {
+			"type": "string",
+			"maxLength": 50
+		},
+		"versionInfo": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"vendor": {
+							"$ref": "#/definitions/vendor"
+						},
+						"model": {
+							"$ref": "#/definitions/modelName"
+						},
+						"softwareVersion": {
+							"$ref": "#/definitions/version"
+						},
+						"firmwareVersion": {
+							"$ref": "#/definitions/version"
+						},
+						"osVersion": {
+							"$ref": "#/definitions/version"
+						},
+						"hardwareVersion": {
+							"$ref": "#/definitions/version"
+						}
+					}
+				}
+			]
+		},
+		"genericDevice": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"physicalDeviceInfo": {
+							"$ref": "#/definitions/physicalDeviceInfo"
+						},
+						"otherDeviceInfo": {
+							"type": "array",
+							"items": {
+								"anyOf": [
+									{
+										"$ref": "#/definitions/peripheralDeviceInfo"
+									},
+									{
+										"$ref": "#/definitions/integratedDeviceInfo"
+									},
+									{
+										"$ref": "#/definitions/networkedDeviceInfo"
+									}
+								]
+							}
+						},
+						"sysID": {
+							"$ref": "#/definitions/sysID"
+						},
+						"category": {
+							"$ref": "#/definitions/deviceCategorySoftEnum"
+						},
+						"location": {
+							"type": "string",
+							"enum": [
+								"inside",
+								"outside"
+							]
+						}
+					}
+				}
+			]
+		}
+	}
+}

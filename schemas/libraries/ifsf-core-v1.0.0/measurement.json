@@ -1,0 +1,48 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "measurement.raml",
+	"definitions": {
+		"systemOfMeasurementEnum": {
+			"description": "enum values excerpted from IFSF TG Standard",
+			"type": "string",
+			"enum": [
+				"metric",
+				"imperial",
+				"american"
+			]
+		},
+		"unitOfMeasurementEnum": {
+			"description": "enum values excerpted from IFSF Engineering Bulletin 14",
+			"type": "string",
+			"enum": [
+				"CEL",
+				"CMQ",
+				"DD",
+				"EA",
+				"FAH",
+				"FOT",
+				"GLI",
+				"GLL",
+				"GRM",
+				"INH",
+				"KGM",
+				"LBR",
+				"LTR",
+				"MMT",
+				"MTK",
+				"MTQ",
+				"MTR"
+			]
+		},
+		"unitOfMeasurementSoftEnum": {
+			"anyOf": [
+				{
+					"type": "string"
+				},
+				{
+					"$ref": "#/definitions/unitOfMeasurementEnum"
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,31 @@
+#%RAML 1.0 Library
+
+types:
+  extensible:
+    description: base class used to implement vendor extensions
+    type: object
+    properties:
+      extensions?: extension[]
+
+  extension:
+    type: object
+    properties:
+      id:
+        type: string
+        required: true
+      payload:
+        type: string[]
+        required: true
+        description:
+          JSON does not support multiline strings. In order to work around this
+          limitation and maintain JSON readability, the payload can be sent
+          as a string array. The array elements should be concatenated to
+          form a single JSON string.
+    example:
+      {
+        "id": "CNG_Pressure",
+        "payload" : ["{",
+          "\"pressure_uom\" : \"bar\",",
+          "\"pressure_value\" : \"200\"",
+        "}"]
+      }

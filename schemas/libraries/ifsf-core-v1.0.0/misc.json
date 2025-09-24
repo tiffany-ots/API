@@ -1,0 +1,14 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "misc.raml",
+	"definitions": {
+		"decimal": {
+			"description": "XML \"xsd-decimal\" rules apply. YAML does not support decimal type natively, so we use a string.",
+			"type": "string"
+		},
+		"monetaryAmount": {
+			"description": "Common definition of monetary amount data type.",
+			"type": "number"
+		}
+	}
+}

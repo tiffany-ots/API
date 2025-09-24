@@ -1,0 +1,36 @@
+#%RAML 1.0 Library
+
+usage: >
+  Data type used in the body of error responses. Used when a verb returns a
+  value different than a dataset.
+
+uses:
+  extension: extension.raml
+
+types:
+  response:
+    type: extension.extensible
+    properties:
+      error: integer
+      description:
+        displayName: error description
+        type: string
+      reference:
+        type: string
+        required: false
+        description: reference to an object
+      recordCount:
+        displayName: record count
+        type: integer
+        required: false
+        description: amount of records that were processed
+      url:
+        displayName: error URL
+        type: string
+        required: false
+        description: url that can be used to retrieve error documentation
+      stackTrace:
+        displayName: stack trace
+        type: string[]
+        required: false
+        description: stack trace, encoded in one line per array item

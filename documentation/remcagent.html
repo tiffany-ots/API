@@ -1,0 +1,529 @@
+<!DOCTYPE HTML><html><head><title>REMC CHP API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/raml2html/raml2html 4.0.0-beta17"><link rel="stylesheet" href="content\bootstrap.min.css"><link rel="stylesheet" href="content\default.min.css"><script type="text/javascript" src="content\jquery-1.11.0.min.js"></script><script type="text/javascript" src="content\bootstrap.min.js"></script><script type="text/javascript" src="content\highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code, .modal-body pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          try {
+            if (history && history.replaceState) {
+                history.replaceState({}, '', '#');
+            }
+          } catch(e) {}
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h1 {
+        font-size: 1.3em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+      pre code {
+        overflow: auto;
+        word-wrap: normal;
+        white-space: pre;
+      }
+      .items {
+        background: #f5f5f5;
+        color: #333;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 9.5px;
+        margin: 0 0 10px;
+        font-size: 13px;
+        line-height: 1.42857143;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>REMC CHP API documentation <small>version 1.0</small></h1><p>http:/hostname/ifsf-remc-agent/{version}</p><ul><li><strong>version</strong>: <em>required (1.0)</em></li></ul></div><div class="panel panel-default"><div class="panel-heading"><h3 id="sites" class="panel-title">/sites</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_sites"><span class="parent"></span>/sites</a> <span class="methods"><a href="#sites_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_sites" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#sites_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>This collection usually only has one item because an agent usually only monitors a single site. However, it is technically possible for a single REMC agent instance to monitor two "sites". For example, this could happen at a single location with two forecourts, one for petrol/diesel and the other for Natural Compressed Gas, using two separate site identifiers.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="sites_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/sites</h4></div><div class="modal-body"><div class="alert alert-info"><p>This collection usually only has one item because an agent usually only monitors a single site. However, it is technically possible for a single REMC agent instance to monitor two "sites". For example, this could happen at a single location with two forecourts, one for petrol/diesel and the other for Natural Compressed Gas, using two separate site identifiers.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.noAuth</b><p>no authentication required</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.basicAuthentication</b><p>This API supports Basic Authentication.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.apikey</b><p>apikey security scheme as defined by IFSF Part 2.03 document.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.oAuth20</b><p>OAuth2 security scheme as defined by IFSF Part 2.03 document.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#sites_get_response" data-toggle="tab">Response</a></li><li><a href="#sites_get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sites_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: array of string</p><p><strong>Examples</strong>:</p><pre><code>["123456","865234"]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: core.error.response</p><p><strong>Examples</strong>:</p><pre><code>{
+  "error": 404,
+  "description": "Resource not found"
+}
+</code></pre></div><div class="tab-pane" id="sites_get_securedby"><h1>Secured by core.noAuth</h1><h1>Secured by core.basicAuthentication</h1><h1>Secured by core.apikey</h1><h3>Headers</h3><ul><li><strong>X-Api-Key</strong>: <em>required (string)</em><p>The key needed to perfom an IFSF API call</p></li></ul><h1>Secured by core.oAuth20</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Used to send a valid OAuth 2 access token. Do not use together with the "access_token" query string parameter.</p></li></ul></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_sites__siteid_"><span class="parent">/sites</span>/{siteID}</a> <span class="methods"><a href="#sites__siteid__get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_sites__siteid_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#sites__siteid__get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>General site information such as site id, address, etc. The server will respond 200 if the site exists and API key can access the site, 404 if the site does not exist and 403 if the apikey cannot retrieve information for the requested site.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="sites__siteid__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/sites</span>/{siteID}</h4></div><div class="modal-body"><div class="alert alert-info"><p>General site information such as site id, address, etc. The server will respond 200 if the site exists and API key can access the site, 404 if the site does not exist and 403 if the apikey cannot retrieve information for the requested site.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.noAuth</b><p>no authentication required</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.basicAuthentication</b><p>This API supports Basic Authentication.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.apikey</b><p>apikey security scheme as defined by IFSF Part 2.03 document.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.oAuth20</b><p>OAuth2 security scheme as defined by IFSF Part 2.03 document.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#sites__siteid__get_request" data-toggle="tab">Request</a></li><li><a href="#sites__siteid__get_response" data-toggle="tab">Response</a></li><li><a href="#sites__siteid__get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sites__siteid__get_request"><h3>URI Parameters</h3><ul><li><strong>siteID</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="sites__siteid__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: core.site.site</p><p><strong>Examples</strong>:</p><pre><code>{
+  "uniqueID" : "331303e0-a61e-4d7e-9c2d-677553e67de6",
+  "name" : "Shell Hazerswoude",
+  "siteIDs" : [
+    { "type":"SAP", "id":"123456" },
+    { "type":"SHIPTO", "id":"567890" }
+  ],
+  "addressLines" : [
+    "Delta 1A, Building L’Aimant",
+    "Business Park Ijsseloord 2"
+  ],
+  "city": "Arnhem",
+  "postalCode" : "6825 ML",
+  "region" :"Gelderland",
+  "country" : "NL",
+  "phoneNumbers" :[
+    { "type" : "main", "number" : "+31-26-376-4800" },
+    { "type" : "fax", "number" : "+31-26-376-4840" }
+  ],
+  "languages" : ["dut"],
+  "geoCoordinates":{
+    "latitude": 51.978889,
+    "longitude": 5.9657452
+  },
+  "brands": ["ESSO","On The Run"],
+  "tags": ["carwash","atm"]
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: core.error.response</p><p><strong>Examples</strong>:</p><pre><code>{
+  "error": 404,
+  "description": "Resource not found"
+}
+</code></pre></div><div class="tab-pane" id="sites__siteid__get_securedby"><h1>Secured by core.noAuth</h1><h1>Secured by core.basicAuthentication</h1><h1>Secured by core.apikey</h1><h3>Headers</h3><ul><li><strong>X-Api-Key</strong>: <em>required (string)</em><p>The key needed to perfom an IFSF API call</p></li></ul><h1>Secured by core.oAuth20</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Used to send a valid OAuth 2 access token. Do not use together with the "access_token" query string parameter.</p></li></ul></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_sites__siteid__devices"><span class="parent">/sites/{siteID}</span>/devices</a> <span class="methods"><a href="#sites__siteid__devices_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_sites__siteid__devices" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>The device resource is used to store equipment information and configuration.</p></div><div class="list-group"><div onclick="window.location.href = '#sites__siteid__devices_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Will return a list of active devices at the site. Can be filtered by device type. This list contains a unique device identifier for each device and the last configuration change date time for each device, to notify the server that these devices need configuration update.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="sites__siteid__devices_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/sites/{siteID}</span>/devices</h4></div><div class="modal-body"><div class="alert alert-info"><p>Will return a list of active devices at the site. Can be filtered by device type. This list contains a unique device identifier for each device and the last configuration change date time for each device, to notify the server that these devices need configuration update.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.noAuth</b><p>no authentication required</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.basicAuthentication</b><p>This API supports Basic Authentication.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.apikey</b><p>apikey security scheme as defined by IFSF Part 2.03 document.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.oAuth20</b><p>OAuth2 security scheme as defined by IFSF Part 2.03 document.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#sites__siteid__devices_get_request" data-toggle="tab">Request</a></li><li><a href="#sites__siteid__devices_get_response" data-toggle="tab">Response</a></li><li><a href="#sites__siteid__devices_get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sites__siteid__devices_get_request"><h3>URI Parameters</h3><ul><li><strong>siteID</strong>: <em>required (string)</em></li></ul><h3>Query Parameters</h3><ul><li><strong>deviceType</strong>: <em>(string)</em><p>[object Object]</p><p><strong>Examples</strong>:</p><pre>TLG:TP</pre></li><li><strong>view</strong>: <em>(one of verbose, basic)</em></li></ul></div><div class="tab-pane" id="sites__siteid__devices_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: array of device</p><p><strong>Items</strong>: device</p><ul class="items"><li><strong>class</strong>: <em>required (string)</em></li><li><strong>id</strong>: <em>required (string)</em></li><li><strong>name</strong>: <em>(string)</em></li><li><strong>assetTag</strong>: <em>(string)</em></li><li><strong>extraData</strong>: <em>(string)</em></li><li><strong>configTimeStamp</strong>: <em>(datetime)</em></li><li><strong>configExpiration</strong>: <em>(datetime)</em></li><li><strong>configs</strong>: <em>(array of config)</em><p>array of REMC configuration records</p><p><strong>Items</strong>: config</p><ul class="items"><li><strong>code</strong>: <em>required (string)</em><p>configuration parameter database locator</p></li><li><strong>name</strong>: <em>(string)</em><p>configuration parameter readable name</p></li><li><strong>value</strong>: <em>required (string)</em><p>parameter value</p></li></ul></li><li><strong>events</strong>: <em>(array of event)</em><p>array of REMC event records</p><p><strong>Items</strong>: event</p><ul class="items"><li><strong>code</strong>: <em>required (string)</em><p>event code as defined by IFSF</p><p><strong>Examples</strong>:</p><pre>IFSF-TLG:HighWaterAlarm</pre></li><li><strong>name</strong>: <em>(string)</em><p>human readable event name</p><p><strong>Examples</strong>:</p><pre>High water alarm</pre></li><li><strong>severity</strong>: <em>required (one of emerg, alert, err, warning, notice, info, debug)</em><p>extracted verbatim from syslogd manual</p></li><li><strong>sourceTimeStamp</strong>: <em>(datetime)</em><p>event timestamp as reported by the event source</p></li><li><strong>eventCount</strong>: <em>(integer - default: 1)</em></li><li><strong>oemEvents</strong>: <em>(array of oemEvent)</em><p>one or more OEM events can be linked to this REMC event</p><p><strong>Items</strong>: oemEvent</p><ul class="items"><li><strong>code</strong>: <em>required (string)</em></li><li><strong>name</strong>: <em>(string)</em></li><li><strong>sourceTimeStamp</strong>: <em>(datetime)</em><p>event timestamp as reported by the event source</p></li></ul></li></ul></li><li><strong>points</strong>: <em>(array of point)</em><p>array of REMC point records</p><p><strong>Items</strong>: point</p><ul class="items"><li><strong>code</strong>: <em>required (string)</em></li><li><strong>name</strong>: <em>(string)</em></li><li><strong>value</strong>: <em>required (string)</em></li><li><strong>uom</strong>: <em>required (union)</em></li><li><strong>timeStamp</strong>: <em>(datetime)</em><p>agent or device timestamp when the point was measured</p></li></ul></li></ul><p><strong>Examples</strong>:</p><pre><code>[
+  {
+    "id": "WWC-A0001-JC0026",
+    "name": "Pump01",
+    "class": "IFSF.PUMP",
+    "extraData": "Free text extra data. Example {siteID}:TLG:1:TP:3",
+    "assetTag": "GVR-PUMP-WWC-A0001-JC0026",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configExpiration": "2015-11-28T14:39:09-01:00"
+  },
+  {
+    "id": "WWC-A0001-JC0026-01-02",
+    "name": "Nozzle01-1-2",
+    "class": "IFSF.PUMP.DSP.NOZ",
+    "extraData": "{siteID}:PUMP:1:FP:1:NOZ:2",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configExpiration": "2015-11-28T14:39:09-01:00"
+  },
+  {
+    "id": "WWC-A0001-JC0321-03-02",
+    "name": "FuelingPos03-2",
+    "class": "IFSF.PUMP.DSP",
+    "extraData": "{siteID}:PUMP:3:FP:2",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configExpiration": "2015-11-28T14:39:09-01:00"
+  },
+  {
+    "id": "VR350R-0123456789",
+    "name": "Veeder Root TLS-350R",
+    "class": "IFSF.TLG",
+    "assetTag": "VEEDER-350R-SN-12345678",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configExpiration": "2015-11-28T14:39:09-01:00"
+  },
+  {
+    "id": "VR350R-0123456789-TP3",
+    "name": "Tank03",
+    "class": "IFSF.TLG.TP",
+    "extraData": "Free text extra data. Example {siteID}:TLG:1:TP:3",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configExpiration": "2015-11-28T14:39:09-01:00"
+  },
+  {
+    "id": "7",
+    "name": "UK-12345-ROUTER01",
+    "class": "SNMP.ROUTER.C805",
+    "assetTag": "CISCO-805-SN-12345678",
+    "extraData": "{siteID}:SNMP:172.023.054.001",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configExpiration": "2015-11-28T14:39:09-01:00"
+  },
+  {
+    "id": "9",
+    "name": "UK-12345-AIRCON",
+    "class": "SNMP.AIR.CARR",
+    "assetTag": "CARRIER-436-SN-12345678",
+    "extraData": "{siteID}:SNMP:172.023.054.058",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configExpiration": "2015-11-28T14:39:09-01:00"
+  },
+  {
+    "id": "99",
+    "name": "UK-12345-REMC01",
+    "class": "REMC",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configExpiration": "2015-11-28T14:39:09-01:00"
+  }
+]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: core.error.response</p><p><strong>Examples</strong>:</p><pre><code>{
+  "error": 404,
+  "description": "Resource not found"
+}
+</code></pre></div><div class="tab-pane" id="sites__siteid__devices_get_securedby"><h1>Secured by core.noAuth</h1><h1>Secured by core.basicAuthentication</h1><h1>Secured by core.apikey</h1><h3>Headers</h3><ul><li><strong>X-Api-Key</strong>: <em>required (string)</em><p>The key needed to perfom an IFSF API call</p></li></ul><h1>Secured by core.oAuth20</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Used to send a valid OAuth 2 access token. Do not use together with the "access_token" query string parameter.</p></li></ul></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_sites__siteid__remcrecords"><span class="parent">/sites/{siteID}</span>/remcRecords</a> <span class="methods"><a href="#sites__siteid__remcrecords_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_sites__siteid__remcrecords" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#sites__siteid__remcrecords_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Allows the CHP to query for REMC records available in the Device REMC RecordsQueue. The lastPointReceivedFilter will instruct the agent to return only remcRecords queued after the referenced record. If recordBlock is set to 0, then all events in the queue will be returned. This allows for multiple REMC CHPs to query agents.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="sites__siteid__remcrecords_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/sites/{siteID}</span>/remcRecords</h4></div><div class="modal-body"><div class="alert alert-info"><p>Allows the CHP to query for REMC records available in the Device REMC RecordsQueue. The lastPointReceivedFilter will instruct the agent to return only remcRecords queued after the referenced record. If recordBlock is set to 0, then all events in the queue will be returned. This allows for multiple REMC CHPs to query agents.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.noAuth</b><p>no authentication required</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.basicAuthentication</b><p>This API supports Basic Authentication.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.apikey</b><p>apikey security scheme as defined by IFSF Part 2.03 document.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.oAuth20</b><p>OAuth2 security scheme as defined by IFSF Part 2.03 document.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#sites__siteid__remcrecords_get_request" data-toggle="tab">Request</a></li><li><a href="#sites__siteid__remcrecords_get_response" data-toggle="tab">Response</a></li><li><a href="#sites__siteid__remcrecords_get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sites__siteid__remcrecords_get_request"><h3>URI Parameters</h3><ul><li><strong>siteID</strong>: <em>required (string)</em></li></ul><h3>Query Parameters</h3><ul><li><strong>start</strong>: <em>(string)</em><p>The client requests the items starting from the specified identifier. If the item is not found, the server will respond HTTP 404 Not Found.</p><p><strong>Examples</strong>:</p><pre>57688831-dd67-4314-ac43-daef98550b12</pre></li><li><strong>limit</strong>: <em>(integer)</em><p>Maximum number of items to be returned.</p><p><strong>Examples</strong>:</p><pre><code>15</code></pre></li><li><strong>after</strong>: <em>(string)</em><p>The client requests the items after the specified identifier. If the item is not found, the server will respond HTTP 404 Not Found.</p><p><strong>Examples</strong>:</p><pre>57688831-dd67-4314-ac43-daef98550b12</pre></li><li><strong>deviceType</strong>: <em>(string)</em><p>[object Object]</p><p><strong>Examples</strong>:</p><pre>TLG:TP</pre></li><li><strong>recordType</strong>: <em>(string)</em><p>Defines which type of record the client wants to collect. One of the following values can be returned: Config|Event|Point</p><p><strong>Examples</strong>:</p><pre>?recordType=Config</pre></li></ul></div><div class="tab-pane" id="sites__siteid__remcrecords_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: array of device</p><p><strong>Items</strong>: device</p><ul class="items"><li><strong>class</strong>: <em>required (string)</em></li><li><strong>id</strong>: <em>required (string)</em></li><li><strong>name</strong>: <em>(string)</em></li><li><strong>assetTag</strong>: <em>(string)</em></li><li><strong>extraData</strong>: <em>(string)</em></li><li><strong>configTimeStamp</strong>: <em>(datetime)</em></li><li><strong>configExpiration</strong>: <em>(datetime)</em></li><li><strong>configs</strong>: <em>(array of config)</em><p>array of REMC configuration records</p><p><strong>Items</strong>: config</p><ul class="items"><li><strong>code</strong>: <em>required (string)</em><p>configuration parameter database locator</p></li><li><strong>name</strong>: <em>(string)</em><p>configuration parameter readable name</p></li><li><strong>value</strong>: <em>required (string)</em><p>parameter value</p></li></ul></li><li><strong>events</strong>: <em>(array of event)</em><p>array of REMC event records</p><p><strong>Items</strong>: event</p><ul class="items"><li><strong>code</strong>: <em>required (string)</em><p>event code as defined by IFSF</p><p><strong>Examples</strong>:</p><pre>IFSF-TLG:HighWaterAlarm</pre></li><li><strong>name</strong>: <em>(string)</em><p>human readable event name</p><p><strong>Examples</strong>:</p><pre>High water alarm</pre></li><li><strong>severity</strong>: <em>required (one of emerg, alert, err, warning, notice, info, debug)</em><p>extracted verbatim from syslogd manual</p></li><li><strong>sourceTimeStamp</strong>: <em>(datetime)</em><p>event timestamp as reported by the event source</p></li><li><strong>eventCount</strong>: <em>(integer - default: 1)</em></li><li><strong>oemEvents</strong>: <em>(array of oemEvent)</em><p>one or more OEM events can be linked to this REMC event</p><p><strong>Items</strong>: oemEvent</p><ul class="items"><li><strong>code</strong>: <em>required (string)</em></li><li><strong>name</strong>: <em>(string)</em></li><li><strong>sourceTimeStamp</strong>: <em>(datetime)</em><p>event timestamp as reported by the event source</p></li></ul></li></ul></li><li><strong>points</strong>: <em>(array of point)</em><p>array of REMC point records</p><p><strong>Items</strong>: point</p><ul class="items"><li><strong>code</strong>: <em>required (string)</em></li><li><strong>name</strong>: <em>(string)</em></li><li><strong>value</strong>: <em>required (string)</em></li><li><strong>uom</strong>: <em>required (union)</em></li><li><strong>timeStamp</strong>: <em>(datetime)</em><p>agent or device timestamp when the point was measured</p></li></ul></li></ul><p><strong>Examples</strong>:</p><pre><code>[
+  {
+    "id": "WWC-A0001-JC0026",
+    "class": "IFSF.PUMP",
+    "name": "Dispenser1",
+    "extraData": "Free text extra data. Example {siteID}:TLG:1:TP:3",
+    "assetTag": "GVR-PUMP-WWC-A0001-JC0026",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configs": [
+      {
+        "id": "20150101081500-000128",
+        "created": "2015-01-02T03:25:32Z",
+        "code": "IFSF:FPDB:01h",
+        "name": "FP_Name",
+        "value": "FP01"
+      },
+      {
+        "id": "20150101081500-000129",
+        "created": "2015-01-02T03:26:32Z",
+        "code": "IFSF-LNDB:01h",
+        "name": "Pr_Id",
+        "value": "3"
+      }
+    ],
+    "events": [
+      {
+        "id": "20150101081500-000130",
+        "created": "2015-01-02T03:26:50Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Battery error",
+        "severity": "err",
+        "sourceTimeStamp": "2015-01-02T03:01:00Z",
+        "oemEvents": [
+          {
+            "code": "17",
+            "name": "5V Battery Low"
+          },
+          {
+            "code": "18",
+            "name": "3.3V Battery Low"
+          }
+        ]
+      },
+      {
+        "id": "20150101081500-000131",
+        "created": "2015-01-02T03:26:50Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Display Error",
+        "severity": "err",
+        "sourceTimeStamp": "2015-01-02T03:10:00Z"
+      }
+    ]
+  },
+  {
+    "id": "WWC-A0001-JC0026-01-02",
+    "name": "Nozzle01-1-2",
+    "class": "IFSF.PUMP.DSP.NOZ",
+    "extraData": "{siteID}:PUMP:1:FP:1:NOZ:2",
+    "configTimeStamp": "2002-10-07T14:39:09-01:00",
+    "points": [
+      {
+        "id": "20150101081500-000132",
+        "created": "2015-01-02T03:31:00Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "HoseExpansionVol",
+        "timeStamp": "2015-01-02T03:30:58Z",
+        "value": "120.6"
+      },
+      {
+        "id": "20150101081500-000133",
+        "created": "2015-01-02T03:33:00Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "HoseExpansionVol",
+        "timeStamp": "2015-01-02T03:32:58Z",
+        "value": "120.4"
+      },
+      {
+        "id": "20150101081500-000134",
+        "created": "2015-01-02T03:35:00Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "HoseExpansionVol",
+        "timeStamp": "2015-01-02T03:34:58Z",
+        "value": "120.2"
+      }
+    ]
+  },
+  {
+    "id": "VR350R-0123456789",
+    "name": "Veeder Root TLS-350R",
+    "class": "IFSF.TLG",
+    "assetTag": "VEEDER-350R-SN-12345678",
+    "configTimeStamp": "2002-10-07T14:39:09-01:00",
+    "events": [
+      {
+        "id": "20150101081500-000135",
+        "created": "2015-01-02T03:36:00Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Battery Low",
+        "severity": "err",
+        "sourceTimeStamp": "2015-01-02T03:30:00Z"
+      },
+      {
+        "id": "20150101081500-000136",
+        "created": "2015-01-02T04:00:01Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Configuration checksum error",
+        "severity": "err",
+        "sourceTimeStamp": "1970-01-01T00:00:00Z"
+      }
+    ]
+  },
+  {
+    "id": "VR350R-0123456789-TP3",
+    "name": "Tank03",
+    "class": "IFSF.TLG.TP",
+    "extraData": "Free text extra data. Example {siteID}:TLG:1:TP:3",
+    "configTimeStamp": "2002-10-07T14:39:09-01:00",
+    "configs": [
+      {
+        "id": "20150101081500-000137",
+        "created": "2015-01-02T04:10:01Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "TankNo",
+        "value": "2"
+      },
+      {
+        "id": "20150101081500-000138",
+        "created": "2015-01-02T04:10:02Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "ProductNo",
+        "value": "1000"
+      },
+      {
+        "id": "20150101081500-000139",
+        "created": "2015-01-02T04:10:03Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "ProductName",
+        "value": "Unleaded 95"
+      }
+    ],
+    "events": [
+      {
+        "id": "20150101081500-000140",
+        "created": "2015-01-02T04:10:04Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Tank probe error",
+        "severity": "err",
+        "sourceTimeStamp": "2015-01-02T04:09:40Z"
+      },
+      {
+        "id": "20150101081500-000141",
+        "created": "2015-01-02T04:10:05Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Supply warning",
+        "severity": "warning",
+        "sourceTimeStamp": "2015-01-02T04:09:41Z"
+      },
+      {
+        "id": "20150101081500-000142",
+        "created": "2015-01-02T04:10:06Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "High water level alarm",
+        "severity": "warning",
+        "sourceTimeStamp": "2015-01-02T04:09:41Z"
+      },
+      {
+        "id": "20150101081500-000143",
+        "created": "2015-01-02T04:10:06Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "water level normal",
+        "severity": "info",
+        "sourceTimeStamp": "2015-01-02T04:09:41Z"
+      },
+      {
+        "id": "20150101081500-000144",
+        "created": "2015-01-02T04:10:08Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Tank leak alarm",
+        "severity": "warning",
+        "sourceTimeStamp": "2015-01-02T04:09:42Z"
+      }
+    ],
+    "points": [
+      {
+        "id": "20150101081500-000145",
+        "created": "2015-01-02T04:10:09Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "TotalObservedVolume",
+        "uom": "LTR",
+        "value": "10000"
+      },
+      {
+        "id": "20150101081500-000146",
+        "created": "2015-01-02T04:11:09Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "TotalObservedVolume",
+        "uom": "LTR",
+        "value": "10000"
+      },
+      {
+        "id": "20150101081500-000147",
+        "created": "2015-01-02T04:12:09Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "TotalObservedVolume",
+        "uom": "LTR",
+        "value": "9999"
+      },
+      {
+        "id": "20150101081500-000148",
+        "created": "2015-01-02T04:13:09Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "TotalObservedVolume",
+        "uom": "LTR",
+        "value": "9997"
+      },
+      {
+        "id": "20150101081500-000149",
+        "created": "2015-01-02T04:14:09Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Temperature",
+        "uom": "DEG",
+        "value": "18.2"
+      },
+      {
+        "id": "20150101081500-000150",
+        "created": "2015-01-02T04:15:09Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Temperature",
+        "uom": "DEG",
+        "value": "18.3"
+      },
+      {
+        "id": "20150101081500-000151",
+        "created": "2015-01-02T04:16:09Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Temperature",
+        "uom": "DEG",
+        "value": "18.4"
+      },
+      {
+        "id": "20150101081500-000152",
+        "created": "2015-01-02T04:14:09Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "Temperature",
+        "uom": "DEG",
+        "value": "18.5"
+      }
+    ]
+  }
+]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: core.error.response</p><p><strong>Examples</strong>:</p><pre><code>{
+  "error": 404,
+  "description": "Resource not found"
+}
+</code></pre></div><div class="tab-pane" id="sites__siteid__remcrecords_get_securedby"><h1>Secured by core.noAuth</h1><h1>Secured by core.basicAuthentication</h1><h1>Secured by core.apikey</h1><h3>Headers</h3><ul><li><strong>X-Api-Key</strong>: <em>required (string)</em><p>The key needed to perfom an IFSF API call</p></li></ul><h1>Secured by core.oAuth20</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Used to send a valid OAuth 2 access token. Do not use together with the "access_token" query string parameter.</p></li></ul></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_sites__siteid__pcisiteassetdata"><span class="parent">/sites/{siteID}</span>/pciSiteAssetData</a> <span class="methods"><a href="#sites__siteid__pcisiteassetdata_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_sites__siteid__pcisiteassetdata" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#sites__siteid__pcisiteassetdata_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Allows the CHP to query the PCI Asset Report queue.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="sites__siteid__pcisiteassetdata_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/sites/{siteID}</span>/pciSiteAssetData</h4></div><div class="modal-body"><div class="alert alert-info"><p>Allows the CHP to query the PCI Asset Report queue.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.noAuth</b><p>no authentication required</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.basicAuthentication</b><p>This API supports Basic Authentication.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.apikey</b><p>apikey security scheme as defined by IFSF Part 2.03 document.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>core.oAuth20</b><p>OAuth2 security scheme as defined by IFSF Part 2.03 document.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#sites__siteid__pcisiteassetdata_get_request" data-toggle="tab">Request</a></li><li><a href="#sites__siteid__pcisiteassetdata_get_response" data-toggle="tab">Response</a></li><li><a href="#sites__siteid__pcisiteassetdata_get_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sites__siteid__pcisiteassetdata_get_request"><h3>URI Parameters</h3><ul><li><strong>siteID</strong>: <em>required (string)</em></li></ul><h3>Query Parameters</h3><ul><li><strong>start</strong>: <em>(string)</em><p>The client requests the items starting from the specified identifier. If the item is not found, the server will respond HTTP 404 Not Found.</p><p><strong>Examples</strong>:</p><pre>57688831-dd67-4314-ac43-daef98550b12</pre></li><li><strong>limit</strong>: <em>(integer)</em><p>Maximum number of items to be returned.</p><p><strong>Examples</strong>:</p><pre><code>15</code></pre></li><li><strong>after</strong>: <em>(string)</em><p>The client requests the items after the specified identifier. If the item is not found, the server will respond HTTP 404 Not Found.</p><p><strong>Examples</strong>:</p><pre>57688831-dd67-4314-ac43-daef98550b12</pre></li></ul></div><div class="tab-pane" id="sites__siteid__pcisiteassetdata_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: array of siteAssetData</p><p><strong>Items</strong>: siteAssetData</p><ul class="items"><li><strong>id</strong>: <em>required (string - maxLength: 80)</em><p>report identifier</p></li><li><strong>dateTimeStamp</strong>: <em>required (datetime)</em><p>timestamp of when the data was recorded</p></li><li><strong>site</strong>: <em>required (core.site.site)</em></li><li><strong>attendedMode</strong>: <em>required (one of partialUnattended, unattended, attended)</em><p>Describes which attended modes are supported. Can be used to assess the risk of skimming on site.</p></li><li><strong>posTerminals</strong>: <em>(array of posTerminal)</em><p><strong>Items</strong>: posTerminal</p><ul class="items"><li><strong>sysID</strong>: <em>required (integer - minimum: 0 - maximum: 999)</em></li><li><strong>physicalDeviceInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>deviceIdentifiers</strong>: <em>required (array of deviceIdentifier)</em><p>Unique number (e.g. serial number) used to track assets at a site for the purposes of "major oil" asset gathering and potential PCI compliance (Sect. 9.9.1 in PCI 3.1) solutions. Multiple identifiers may be described with the expectation they will be differentiated by the attributes type and description.</p><p><strong>Items</strong>: deviceIdentifier</p><ul class="items"><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li><li><strong>type</strong>: <em>required (one of serialNumber, macAddress, processorID, assetTag, other)</em><p>Describes the type of tracking information that is being reported. Whatever the type, this data is expected to be sufficiently unique to track the asset within all the companies installations by vendor</p></li><li><strong>description</strong>: <em>required (string - minLength: 1 - maxLength: 128)</em><p>Describe the data reported in the tracking information element. This attribute would be expected to contain data if the type attribute is of type "other"</p></li></ul></li><li><strong>versionInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>vendor</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>model</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>softwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>firmwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>osVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>hardwareVersion</strong>: <em>required (string - maxLength: 50)</em></li></ul></li></ul></li><li><strong>applicationStartTime</strong>: <em>(datetime)</em><p>timestamp of when the application was last started. A timestamp of 0 indicates the information is not known.</p></li><li><strong>middlewareComponents</strong>: <em>(array of middlewareComponent)</em><p><strong>Items</strong>: middlewareComponent</p><ul class="items"><li><strong>vendor</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>model</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>softwareVersion</strong>: <em>required (string - maxLength: 50)</em></li></ul></li><li><strong>devices</strong>: <em>(array of genericDevice)</em><p><strong>Items</strong>: genericDevice</p><ul class="items"><li><strong>physicalDeviceInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>deviceIdentifiers</strong>: <em>required (array of deviceIdentifier)</em><p>Unique number (e.g. serial number) used to track assets at a site for the purposes of "major oil" asset gathering and potential PCI compliance (Sect. 9.9.1 in PCI 3.1) solutions. Multiple identifiers may be described with the expectation they will be differentiated by the attributes type and description.</p><p><strong>Items</strong>: deviceIdentifier</p><ul class="items"><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li><li><strong>type</strong>: <em>required (one of serialNumber, macAddress, processorID, assetTag, other)</em><p>Describes the type of tracking information that is being reported. Whatever the type, this data is expected to be sufficiently unique to track the asset within all the companies installations by vendor</p></li><li><strong>description</strong>: <em>required (string - minLength: 1 - maxLength: 128)</em><p>Describe the data reported in the tracking information element. This attribute would be expected to contain data if the type attribute is of type "other"</p></li></ul></li><li><strong>versionInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>vendor</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>model</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>softwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>firmwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>osVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>hardwareVersion</strong>: <em>required (string - maxLength: 50)</em></li></ul></li></ul></li><li><strong>otherDeviceInfo</strong>: <em>required (array of items)</em></li><li><strong>sysID</strong>: <em>required (integer - minimum: 0 - maximum: 999)</em></li><li><strong>category</strong>: <em>required (union)</em></li><li><strong>location</strong>: <em>required (one of inside, outside)</em></li></ul></li><li><strong>secureDataEntryDevices</strong>: <em>(array of secureDataEntryDevice)</em><p><strong>Items</strong>: secureDataEntryDevice</p><ul class="items"><li><strong>encryptionCapabilities</strong>: <em>required (array of items)</em></li><li><strong>integratedContactlessReader</strong>: <em>required (boolean)</em></li><li><strong>emvData</strong>: <em>required (core.extensible)</em><ul><li><strong>l1Data</strong>: <em>required (core.extensible)</em><p>Hardware LOA information</p><ul><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>l2Data</strong>: <em>required (core.extensible)</em><p>Kernel LOA information</p><ul><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>emvContactlessKernels</strong>: <em>(array of kernelData)</em><p>Describe each brand&#39;s EMVContactless kernel</p><p><strong>Items</strong>: kernelData</p><ul class="items"><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>type</strong>: <em>required (one of contact, contactless, contactAndContactless, none)</em><p>Describe EMV input capabilities</p></li></ul></li></ul></li></ul></li><li><strong>merchantIDs</strong>: <em>required (array of siteID)</em><p>Also known as merchant number. This usually contains one ID for each card acquirer. Merchant IDs may change if a site is sold or other business type event occurs.</p><p><strong>Items</strong>: siteID</p><ul class="items"><li><strong>type</strong>: <em>required (string - maxLength: 10)</em></li><li><strong>id</strong>: <em>required (string - maxLength: 20)</em></li></ul></li><li><strong>dispenserHardwareInterfaces</strong>: <em>(array of dispenserHardwareInterface)</em><p>describes the hardware interface between the dispensers and the POS, usually FDC hardware. If this data is not available, use "other" as the deviceIdentifier type and enter "Data not available" as a description.</p><p><strong>Items</strong>: dispenserHardwareInterface</p><ul class="items"><li><strong>sysID</strong>: <em>required (integer - minimum: 1 - maximum: 99)</em><p>Identifier for this HardwareInterface. This is intended as a system identifier, i.e. DB key, not the PCI device Identifier.</p></li><li><strong>dispenserIDs</strong>: <em>required (array of items)</em></li><li><strong>physicalDeviceInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>deviceIdentifiers</strong>: <em>required (array of deviceIdentifier)</em><p>Unique number (e.g. serial number) used to track assets at a site for the purposes of "major oil" asset gathering and potential PCI compliance (Sect. 9.9.1 in PCI 3.1) solutions. Multiple identifiers may be described with the expectation they will be differentiated by the attributes type and description.</p><p><strong>Items</strong>: deviceIdentifier</p><ul class="items"><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li><li><strong>type</strong>: <em>required (one of serialNumber, macAddress, processorID, assetTag, other)</em><p>Describes the type of tracking information that is being reported. Whatever the type, this data is expected to be sufficiently unique to track the asset within all the companies installations by vendor</p></li><li><strong>description</strong>: <em>required (string - minLength: 1 - maxLength: 128)</em><p>Describe the data reported in the tracking information element. This attribute would be expected to contain data if the type attribute is of type "other"</p></li></ul></li><li><strong>versionInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>vendor</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>model</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>softwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>firmwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>osVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>hardwareVersion</strong>: <em>required (string - maxLength: 50)</em></li></ul></li></ul></li></ul></li><li><strong>dispensers</strong>: <em>(array of dispenser)</em><p>describes each dispenser</p><p><strong>Items</strong>: dispenser</p><ul class="items"><li><strong>sysID</strong>: <em>required (integer - minimum: 1 - maximum: 99)</em><p>Identifier for this dispenser. This is intended as a system identifier, i.e. DB key, not the PCI device Identifier.</p></li><li><strong>isBlender</strong>: <em>required (boolean)</em></li><li><strong>physicalDeviceInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>deviceIdentifiers</strong>: <em>required (array of deviceIdentifier)</em><p>Unique number (e.g. serial number) used to track assets at a site for the purposes of "major oil" asset gathering and potential PCI compliance (Sect. 9.9.1 in PCI 3.1) solutions. Multiple identifiers may be described with the expectation they will be differentiated by the attributes type and description.</p><p><strong>Items</strong>: deviceIdentifier</p><ul class="items"><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li><li><strong>type</strong>: <em>required (one of serialNumber, macAddress, processorID, assetTag, other)</em><p>Describes the type of tracking information that is being reported. Whatever the type, this data is expected to be sufficiently unique to track the asset within all the companies installations by vendor</p></li><li><strong>description</strong>: <em>required (string - minLength: 1 - maxLength: 128)</em><p>Describe the data reported in the tracking information element. This attribute would be expected to contain data if the type attribute is of type "other"</p></li></ul></li><li><strong>versionInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>vendor</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>model</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>softwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>firmwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>osVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>hardwareVersion</strong>: <em>required (string - maxLength: 50)</em></li></ul></li></ul></li><li><strong>devices</strong>: <em>(array of genericDevice)</em><p><strong>Items</strong>: genericDevice</p><ul class="items"><li><strong>physicalDeviceInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>deviceIdentifiers</strong>: <em>required (array of deviceIdentifier)</em><p>Unique number (e.g. serial number) used to track assets at a site for the purposes of "major oil" asset gathering and potential PCI compliance (Sect. 9.9.1 in PCI 3.1) solutions. Multiple identifiers may be described with the expectation they will be differentiated by the attributes type and description.</p><p><strong>Items</strong>: deviceIdentifier</p><ul class="items"><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li><li><strong>type</strong>: <em>required (one of serialNumber, macAddress, processorID, assetTag, other)</em><p>Describes the type of tracking information that is being reported. Whatever the type, this data is expected to be sufficiently unique to track the asset within all the companies installations by vendor</p></li><li><strong>description</strong>: <em>required (string - minLength: 1 - maxLength: 128)</em><p>Describe the data reported in the tracking information element. This attribute would be expected to contain data if the type attribute is of type "other"</p></li></ul></li><li><strong>versionInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>vendor</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>model</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>softwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>firmwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>osVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>hardwareVersion</strong>: <em>required (string - maxLength: 50)</em></li></ul></li></ul></li><li><strong>otherDeviceInfo</strong>: <em>required (array of items)</em></li><li><strong>sysID</strong>: <em>required (integer - minimum: 0 - maximum: 999)</em></li><li><strong>category</strong>: <em>required (union)</em></li><li><strong>location</strong>: <em>required (one of inside, outside)</em></li></ul></li><li><strong>secureDataEntryDevices</strong>: <em>(array of secureDataEntryDevice)</em><p><strong>Items</strong>: secureDataEntryDevice</p><ul class="items"><li><strong>encryptionCapabilities</strong>: <em>required (array of items)</em></li><li><strong>integratedContactlessReader</strong>: <em>required (boolean)</em></li><li><strong>emvData</strong>: <em>required (core.extensible)</em><ul><li><strong>l1Data</strong>: <em>required (core.extensible)</em><p>Hardware LOA information</p><ul><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>l2Data</strong>: <em>required (core.extensible)</em><p>Kernel LOA information</p><ul><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>emvContactlessKernels</strong>: <em>(array of kernelData)</em><p>Describe each brand&#39;s EMVContactless kernel</p><p><strong>Items</strong>: kernelData</p><ul class="items"><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>type</strong>: <em>required (one of contact, contactless, contactAndContactless, none)</em><p>Describe EMV input capabilities</p></li></ul></li></ul></li></ul></li><li><strong>devices</strong>: <em>(array of genericDevice)</em><p><strong>Items</strong>: genericDevice</p><ul class="items"><li><strong>physicalDeviceInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>deviceIdentifiers</strong>: <em>required (array of deviceIdentifier)</em><p>Unique number (e.g. serial number) used to track assets at a site for the purposes of "major oil" asset gathering and potential PCI compliance (Sect. 9.9.1 in PCI 3.1) solutions. Multiple identifiers may be described with the expectation they will be differentiated by the attributes type and description.</p><p><strong>Items</strong>: deviceIdentifier</p><ul class="items"><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li><li><strong>type</strong>: <em>required (one of serialNumber, macAddress, processorID, assetTag, other)</em><p>Describes the type of tracking information that is being reported. Whatever the type, this data is expected to be sufficiently unique to track the asset within all the companies installations by vendor</p></li><li><strong>description</strong>: <em>required (string - minLength: 1 - maxLength: 128)</em><p>Describe the data reported in the tracking information element. This attribute would be expected to contain data if the type attribute is of type "other"</p></li></ul></li><li><strong>versionInfo</strong>: <em>required (core.extensible)</em><ul><li><strong>vendor</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>model</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>softwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>firmwareVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>osVersion</strong>: <em>required (string - maxLength: 50)</em></li><li><strong>hardwareVersion</strong>: <em>required (string - maxLength: 50)</em></li></ul></li></ul></li><li><strong>otherDeviceInfo</strong>: <em>required (array of items)</em></li><li><strong>sysID</strong>: <em>required (integer - minimum: 0 - maximum: 999)</em></li><li><strong>category</strong>: <em>required (union)</em></li><li><strong>location</strong>: <em>required (one of inside, outside)</em></li></ul></li><li><strong>secureDataEntryDevices</strong>: <em>(array of secureDataEntryDevice)</em><p><strong>Items</strong>: secureDataEntryDevice</p><ul class="items"><li><strong>encryptionCapabilities</strong>: <em>required (array of items)</em></li><li><strong>integratedContactlessReader</strong>: <em>required (boolean)</em></li><li><strong>emvData</strong>: <em>required (core.extensible)</em><ul><li><strong>l1Data</strong>: <em>required (core.extensible)</em><p>Hardware LOA information</p><ul><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>l2Data</strong>: <em>required (core.extensible)</em><p>Kernel LOA information</p><ul><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>emvContactlessKernels</strong>: <em>(array of kernelData)</em><p>Describe each brand&#39;s EMVContactless kernel</p><p><strong>Items</strong>: kernelData</p><ul class="items"><li><strong>name</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>version</strong>: <em>(string - minLength: 1 - maxLength: 32)</em></li><li><strong>expirationDate</strong>: <em>required (date-only)</em></li><li><strong>derivation</strong>: <em>required (one of physicalConfig, osCall, libraryCall, secureManualKey, manualKey, none, other)</em><p>Describes how the data was derived. Some form of automated collection is preferred over manual keyed methods.</p></li></ul></li><li><strong>type</strong>: <em>required (one of contact, contactless, contactAndContactless, none)</em><p>Describe EMV input capabilities</p></li></ul></li></ul></li></ul><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: core.error.response</p><p><strong>Examples</strong>:</p><pre><code>{
+  "error": 404,
+  "description": "Resource not found"
+}
+</code></pre></div><div class="tab-pane" id="sites__siteid__pcisiteassetdata_get_securedby"><h1>Secured by core.noAuth</h1><h1>Secured by core.basicAuthentication</h1><h1>Secured by core.apikey</h1><h3>Headers</h3><ul><li><strong>X-Api-Key</strong>: <em>required (string)</em><p>The key needed to perfom an IFSF API call</p></li></ul><h1>Secured by core.oAuth20</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Used to send a valid OAuth 2 access token. Do not use together with the "access_token" query string parameter.</p></li></ul></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#sites">/sites</a></li></ul></div></div></div></div></body></html>

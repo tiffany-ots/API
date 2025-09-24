@@ -1,0 +1,75 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "core.raml",
+	"definitions": {
+		"countryCode": {
+			"$ref": "country.json#/definitions/codeSoftEnum"
+		},
+		"cryptoAlgorithms": {
+			"$ref": "crypto.json#/definitions/algorithmEnum"
+		},
+		"currencyCode": {
+			"$ref": "currency.json#/definitions/codeSoftEnum"
+		},
+		"decimal": {
+			"$ref": "misc.json#/definitions/decimal"
+		},
+		"error": {
+			"$ref": "error.json#/definitions/response"
+		},
+		"extension": {
+			"$ref": "extension.json#/definitions/extension"
+		},
+		"extensible": {
+			"$ref": "extension.json#/definitions/extensible"
+		},
+		"geoCoordinates": {
+			"$ref": "geoCoordinates.json#/definitions/geoCoordinates"
+		},
+		"giskeKeyHeader": {
+			"$ref": "crypto.json#/definitions/giskeKeyHeader"
+		},
+		"giskeKeyUsage": {
+			"$ref": "crypto.json#/definitions/giskeKeyUsage"
+		},
+		"giskeAlgorithm": {
+			"$ref": "crypto.json#/definitions/giskeAlgorithm"
+		},
+		"giskeModeOfUse": {
+			"$ref": "crypto.json#/definitions/giskeModeOfUse"
+		},
+		"giskeExportability": {
+			"$ref": "crypto.json#/definitions/giskeExportabilityEnum"
+		},
+		"ipv4Address": {
+			"$ref": "networking.json#/definitions/ipv4Address"
+		},
+		"ipv6Address": {
+			"$ref": "networking.json#/definitions/ipv6Address"
+		},
+		"macAddress": {
+			"$ref": "networking.json#/definitions/macAddress"
+		},
+		"monetaryAmount": {
+			"$ref": "misc.json#/definitions/monetaryAmount"
+		},
+		"languageCode": {
+			"$ref": "language.json#/definitions/codeSoftEnum"
+		},
+		"severityCode": {
+			"$ref": "syslog.json#/definitions/severityCode"
+		},
+		"site": {
+			"$ref": "site.json#/definitions/site"
+		},
+		"siteID": {
+			"$ref": "site.json#/definitions/siteID"
+		},
+		"systemOfMeasurementEnum": {
+			"$ref": "measurement.json#/definitions/systemOfMeasurementEnum"
+		},
+		"unitOfMeasurementSoftEnum": {
+			"$ref": "measurement.json#/definitions/unitOfMeasurementSoftEnum"
+		}
+	}
+}

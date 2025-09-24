@@ -1,0 +1,155 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "crypto.raml",
+	"definitions": {
+		"algorithmEnum": {
+			"title": "algorithmEnum",
+			"description": "Comment describing your JSON Schema",
+			"type": "string",
+			"enum": [
+				"3des",
+				"aes",
+				"des",
+				"dsa",
+				"ellipticCurve",
+				"rsa",
+				"unknownOrUnspecified"
+			]
+		},
+		"algorithmSoftEnum": {
+			"anyOf": [
+				{
+					"type": "string"
+				},
+				{
+					"$ref": "#/definitions/algorithmEnum"
+				}
+			]
+		},
+		"giskeAlgorithmEnum": {
+			"description": "GISKE Specification 2.3a - Key Block header byte 7",
+			"type": "string",
+			"enum": [
+				"3des",
+				"aes",
+				"des",
+				"dsa",
+				"ellipticCurve",
+				"rsa",
+				"unknownOrUnspecified"
+			]
+		},
+		"giskeAlgorithm": {
+			"$ref": "#/definitions/giskeAlgorithmEnum"
+		},
+		"giskeExportabilityEnum": {
+			"description": "GISKE Specification 2.3a - Key Block header byte 27. “Exportability” refers to transfer outside the system in which the key is found. Secure backup of a key may be allowed, depending on local rules. Flags in this field indicate special types of keys that require unusual handling. Any key that does not follow normal security assumptions should have a notation in this field. This may mean that the key should be less trusted, like a CAPI key, or that the key assumes a high degree of trust, such as a CA key. In general, a letter in this column means that future developers should check the definition of this type of key carefully.\n",
+			"type": "string",
+			"enum": [
+				"sensitive",
+				"exportable",
+				"nonExportable"
+			]
+		},
+		"giskeKeyHeader": {
+			"anyOf": [
+				{
+					"$ref": "extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"keyUsage": {
+							"anyOf": [
+								{
+									"$ref": "#/definitions/giskeKeyUsageEnum"
+								},
+								{
+									"type": "string"
+								}
+							]
+						},
+						"algorithm": {
+							"anyOf": [
+								{
+									"$ref": "#/definitions/giskeAlgorithmEnum"
+								},
+								{
+									"type": "string"
+								}
+							]
+						},
+						"modeOfUse": {
+							"anyOf": [
+								{
+									"$ref": "#/definitions/giskeModeOfUseEnum"
+								},
+								{
+									"type": "string"
+								}
+							]
+						},
+						"exportability": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/giskeExportabilityEnum"
+								},
+								{
+									"type": "string"
+								}
+							]
+						}
+					},
+					"required": [
+						"keyUsage",
+						"algorithm",
+						"modeOfUse",
+						"exportability"
+					]
+				}
+			]
+		},
+		"giskeKeyUsage": {
+			"$ref": "#/definitions/giskeKeyUsageEnum"
+		},
+		"giskeModeOfUse": {
+			"$ref": "#/definitions/giskeModeOfUseEnum"
+		},
+		"giskeModeOfUseEnum": {
+			"description": "GISKE Specification 2.3a - Key Block header byte 8",
+			"type": "string",
+			"enum": [
+				"noSpecialRestrictions",
+				"encryptOnly",
+				"decryptOnly",
+				"signatureOnly",
+				"macGenerate",
+				"macVerify",
+				"macCalculate",
+				"iv"
+			]
+		},
+		"giskeKeyUsageEnum": {
+			"description": "GISKE Specification 2.3a - Key Block header bytes 5 and 6. Note that these usages may work for both symmetric and asymmetric keys. This list of usages is not intended to be exhaustive. Future versions may include other key usages types.\n",
+			"type": "string",
+			"enum": [
+				"dataEncryption",
+				"controlVector",
+				"keyEncryptionOrWrapping",
+				"macGeneration",
+				"macVerification",
+				"pinEncryption",
+				"pinVerification",
+				"cardVerificationKey",
+				"keyComponent",
+				"baseDerivationKey",
+				"iso-9791-1-mac1-56",
+				"iso-9791-1-mac1-112",
+				"iso-9791-1-mac2-112",
+				"iso-9791-1-mac3-112",
+				"iso-9791-1-mac4-112",
+				"iso-9791-1-mac5-56",
+				"iso-9791-1-mac5-112"
+			]
+		}
+	}
+}

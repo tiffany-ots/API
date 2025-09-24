@@ -1,0 +1,126 @@
+#%RAML 1.0 Library
+usage: shared types for REMC CHP and Agent
+
+uses:
+  core: ifsf-core-v1.0.0/core.raml
+
+types:
+  remcRecord:
+    type: core.extensible
+    properties:
+      id:
+        type: string
+        description: |
+          Record id. Unique for this agent.
+          Format is seqResetTimeStamp-seqNr where
+            seqResetTimeStamp is yyyymmddhhmmss
+            seqNr is 000001-999999 (rolls over to 1 after 999999)
+          Note: seqResetTimeStamp is the agent's current time when seqNr was
+            initialized or rolled over to 1.
+        example: "20150101081500-000128"
+      created:
+        type: datetime
+        description: record creation timestamp
+
+  config:
+    type: remcRecord
+    properties:
+      code:
+        type: string
+        description: configuration parameter database locator
+      name:
+        type: string
+        description: configuration parameter readable name
+        required: false
+      value:
+        type: string
+        description: parameter value
+    examples:
+      fuelingPoint:
+        value:
+          id: "20150101081500-000128"
+          created: "2015-01-02T03:25:32Z"
+          code: "IFSF-FP:01h"
+          name: "FP_Name"
+          value: "FP01"
+      nozzle:
+        value:
+          id: "20150101081500-000129"
+          created: "2015-01-02T03:26:32-01:00"
+          code: "IFSF-LN:01h"
+          name: "Pr_Id" # (product dispensed at nozzle)
+          value: "3"
+
+  oemEvent:
+    type: object
+    properties:
+      code: string
+      name?: string
+      sourceTimeStamp:
+        type: datetime
+        description: event timestamp as reported by the event source
+        required: false
+
+  event:
+    type: remcRecord
+    properties:
+      code:
+        type: string
+        description: event code as defined by IFSF
+        example: "IFSF-TLG:HighWaterAlarm"
+        required: true
+      name:
+        type: string
+        description: human readable event name
+        example: "High water alarm"
+        required: false
+      severity:
+        type: core.severityCode
+        required: true
+      sourceTimeStamp:
+        type: datetime
+        description: event timestamp as reported by the event source
+        required: false
+      eventCount:
+        type: integer
+        required: false
+        default: 1
+      oemEvents:
+        type: oemEvent[]
+        description: one or more OEM events can be linked to this REMC event
+        required: false
+
+  point:
+    type: remcRecord
+    properties:
+      code: string
+      name?: string
+      value: string
+      uom?: core.unitOfMeasurementSoftEnum
+      timeStamp:
+        type: datetime
+        description: agent or device timestamp when the point was measured
+        required: false
+
+  device:
+    type: core.extensible
+    properties:
+      class: string
+      id: string
+      name?: string
+      assetTag?: string
+      extraData?: string
+      configTimeStamp?: datetime
+      configExpiration?: datetime
+      configs:
+        type: config[]
+        description: array of REMC configuration records
+        required: false
+      events:
+        type: event[]
+        description: array of REMC event records
+        required: false
+      points:
+        type: point[]
+        description: array of REMC point records
+        required: false

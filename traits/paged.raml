@@ -1,0 +1,33 @@
+#%RAML 1.0 Trait
+
+usage:
+  This trait is used to retrieve items in pages from a collection.
+
+  Each item identifier must be unique for this collection.
+
+  The items will be returned to the caller in the same order in which they were
+  added to the collection.
+
+queryParameters:
+  start:
+    description:
+      The client requests the items starting from the specified identifier.
+      If the item is not found, the server will respond HTTP 404 Not Found.
+    type: string
+    example: 57688831-dd67-4314-ac43-daef98550b12
+    required: false
+
+  limit:
+    description:
+      Maximum number of items to be returned.
+    type: integer
+    example: 15
+    required: false
+
+  after:
+    description:
+      The client requests the items after the specified identifier.
+      If the item is not found, the server will respond HTTP 404 Not Found.
+    type: string
+    example: 57688831-dd67-4314-ac43-daef98550b12
+    required: false

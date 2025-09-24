@@ -1,0 +1,11 @@
+#%RAML 1.0 Trait
+
+queryParameters:
+  recordType:
+    displayName: Record Type
+    type: string
+    description: >
+     Defines which type of record the client wants to collect. One of the
+     following values can be returned: Config|Event|Point
+    example: ?recordType=Config
+    required: false

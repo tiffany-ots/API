@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "extension.raml",
+	"definitions": {
+		"extensible": {
+			"$ref": "#/definitions/extension"
+		},
+		"extension": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"payload": {
+					"description": "JSON does not support multiline strings. In order to work around this limitation and maintain JSON readability, the payload can be sent as a string array. The array elements should be concatenated to form a single JSON string.",
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"id",
+				"payload"
+			],
+			"example": {
+				"id": "CNG_Pressure",
+				"payload": [
+					"{",
+					"\"pressure_uom\" : \"bar\",",
+					"\"pressure_value\" : \"200\"",
+					"}"
+				]
+			}
+		}
+	}
+}

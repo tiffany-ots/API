@@ -1,0 +1,56 @@
+[
+  {
+    "id": "WWC-A0001-JC0026",
+    "class": "IFSF.PUMP",
+    "name": "Pump01",
+    "extraData": "Free text extra data. Example {siteID}:TLG:1:TP:3",
+    "assetTag": "GVR-PUMP-WWC-A0001-JC0026",
+    "configTimeStamp": "2015-11-27T14:39:09-01:00",
+    "configs": [
+      {
+        "id": "20150101081500-000128",
+        "created": "2015-01-02T03:25:32Z",
+        "code": "IFSF:FPDB:01h",
+        "name": "FP_Name",
+        "value": "FP01"
+      },
+      {
+        "id": "20150101081500-000129",
+        "created": "2015-01-02T03:26:32Z",
+        "code": "IFSF-LNDB:01h",
+        "name": "Pr_Id",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "id": "VR350R-0123456789-TP3",
+    "name": "Tank03",
+    "class": "IFSF.TLG.TP",
+    "extraData": "Free text extra data. Example {siteID}:TLG:1:TP:3",
+    "configTimeStamp": "2002-10-07T14:39:09-01:00",
+    "configs": [
+      {
+        "id": "20150101081500-000137",
+        "created": "2015-01-02T04:10:01Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "TankNo",
+        "value": "2"
+      },
+      {
+        "id": "20150101081500-000138",
+        "created": "2015-01-02T04:10:02Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "ProductNo",
+        "value": "1000"
+      },
+      {
+        "id": "20150101081500-000139",
+        "created": "2015-01-02T04:10:03Z",
+        "code": "DBxxxxx:ATyyyyy",
+        "name": "ProductName",
+        "value": "Unleaded 95"
+      }
+    ]
+  }
+]

@@ -1,0 +1,198 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "remcTypes.raml",
+	"definitions": {
+		"config": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/remcRecord"
+				},
+				{
+					"examples": [
+						{
+							"value": "{\n  \"id\": \"20150101081500-000128\",\n  \"created\": \"2015-01-02T03:25:32Z\",\n  \"code\": \"IFSF-FP:01h\",\n  \"name\": \"FP_Name\",\n  \"value\": \"FP01\"\n}",
+							"strict": true,
+							"name": "fuelingPoint",
+							"structuredValue": {
+								"id": "20150101081500-000128",
+								"created": "2015-01-02T03:25:32Z",
+								"code": "IFSF-FP:01h",
+								"name": "FP_Name",
+								"value": "FP01"
+							}
+						},
+						{
+							"value": "{\n  \"id\": \"20150101081500-000129\",\n  \"created\": \"2015-01-02T03:26:32-01:00\",\n  \"code\": \"IFSF-LN:01h\",\n  \"name\": \"Pr_Id\",\n  \"value\": \"3\"\n}",
+							"strict": true,
+							"name": "nozzle",
+							"structuredValue": {
+								"id": "20150101081500-000129",
+								"created": "2015-01-02T03:26:32-01:00",
+								"code": "IFSF-LN:01h",
+								"name": "Pr_Id",
+								"value": "3"
+							}
+						}
+					],
+					"properties": {
+						"code": {
+							"description": "configuration parameter database locator",
+							"type": "string"
+						},
+						"name": {
+							"description": "configuration parameter readable name",
+							"type": "string"
+						},
+						"value": {
+							"description": "parameter value",
+							"type": "string"
+						}
+					},
+					"required": [
+						"code",
+						"value"
+					]
+				}
+			]
+		},
+		"event": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/remcRecord"
+				},
+				{
+					"properties": {
+						"code": {
+							"description": "event code as defined by IFSF",
+							"type": "string",
+							"example": "IFSF-TLG:HighWaterAlarm",
+							"structuredExample": {
+								"value": "IFSF-TLG:HighWaterAlarm",
+								"strict": true,
+								"name": null,
+								"structuredValue": "IFSF-TLG:HighWaterAlarm"
+							}
+						},
+						"name": {
+							"description": "human readable event name",
+							"type": "string",
+							"example": "High water alarm",
+							"structuredExample": {
+								"value": "High water alarm",
+								"strict": true,
+								"name": null,
+								"structuredValue": "High water alarm"
+							}
+						},
+						"severity": {
+							"$ref": "ifsf-core-v1.0.0/core.json#/definitions/severityCode"
+						},
+						"sourceTimeStamp": {
+							"description": "event timestamp as reported by the event source",
+							"type": "string",
+							"format": "date-time"
+						},
+						"eventCount": {
+							"type": "integer",
+							"default": 1
+						},
+						"oemEvents": {
+							"description": "one or more OEM events can be linked to this REMC event",
+							"type": "array",
+							"items": {
+								"$ref": "remcTypes.json#/definitions/oemEvent"
+							}
+						}
+					},
+					"required": [
+						"code",
+						"severity"
+					]
+				}
+			]
+		},
+		"oemEvent": {
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"sourceTimeStamp": {
+					"description": "event timestamp as reported by the event source",
+					"type": "string",
+					"format": "date-time"
+				}
+			},
+			"required": [
+				"code"
+			]
+		},
+		"point": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/remcRecord"
+				},
+				{
+					"properties": {
+						"code": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"value": {
+							"type": "string"
+						},
+						"timeStamp": {
+							"description": "agent or device",
+							"type": "string",
+							"format": "date-time"
+						},
+						"uom": {
+							"$ref": "ifsf-core-v1.0.0/Measurement.json#/definitions/unitOfMeasurementSoftEnum"
+						}
+					},
+					"required": [
+						"code",
+						"value",
+						"timeStamp"
+					]
+				}
+			]
+		},
+		"remcRecord": {
+			"allOf": [
+				{
+					"$ref": "ifsf-core-v1.0.0/extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"id": {
+							"description": "Record id. Unique for this agent.\nFormat is seqResetTimeStamp-seqNr where\n  seqResetTimeStamp is yyyymmddhhmmss\n  seqNr is 000001-999999 (rolls over to 1 after 999999)\nNote: seqResetTimeStamp is the agent's current time when seqNr was\n  initialized or rolled over to 1.\n",
+							"type": "string",
+							"example": "20150101081500-000128",
+							"structuredExample": {
+								"value": "20150101081500-000128",
+								"strict": true,
+								"name": null,
+								"structuredValue": "20150101081500-000128"
+							}
+						},
+						"created": {
+							"description": "record creation timestamp",
+							"type": "string",
+							"format": "date-time"
+						}
+					},
+					"required": [
+						"id",
+						"created"
+					]
+				}
+			]
+		}
+	}
+}

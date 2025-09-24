@@ -1,0 +1,36 @@
+#%RAML 1.0 Library
+
+types:
+  unitOfMeasurementSoftEnum: unitOfMeasurementEnum | string
+
+  unitOfMeasurementEnum:
+    description: enum values excerpted from IFSF Engineering Bulletin 14
+    type: string
+    enum: [
+      "CEL", # degree Celsius
+      "CMQ", # centimetre
+      "DD",  # degree [unit of angle]
+      "EA",  # each
+      "FAH", # degree Fahrenheit
+      "FOT", # foot
+      "GLI", # gallon (UK)
+      "GLL", # gallon (US)
+      "GRM", # gram
+      "INH", # inch
+      "KGM", # kilogram
+      "LBR", # pound
+      "LTR", # litre
+      "MMT", # millimetre
+      "MTK", # square metre
+      "MTQ", # cubic meter
+      "MTR"  # meter
+    ]
+
+  systemOfMeasurementEnum:
+    description: enum values excerpted from IFSF TG Standard
+    type: string
+    enum: [
+      "metric",   # All unit of measure take Metric values
+      "imperial", # UK measurements,Imperial Gallon
+      "american"  # USA measurements, US Gallon
+    ]

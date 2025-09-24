@@ -1,0 +1,47 @@
+#%RAML 1.0 Library
+usage: IFSF core library type
+
+uses:
+  country: country.raml
+  crypto: crypto.raml
+  currency: currency.raml
+  geo: geoCoordinates.raml
+  error: error.raml
+  extension: extension.raml
+  language: language.raml
+  misc: misc.raml
+  net: networking.raml
+  site: site.raml
+  syslog: syslog.raml
+  uom: measurement.raml
+
+types:
+  countryCode: country.codeSoftEnum
+  cryptoAlgorithms: crypto.algorithmSoftEnum
+  currencyCode: currency.codeSoftEnum
+  decimal: misc.decimal
+  error: error.response
+  extension: extension.extension
+  extensible: extension.extensible
+  geoCoordinates: geo.geoCoordinates
+  giskeKeyHeader: crypto.giskeKeyHeader
+  giskeKeyUsage: crypto.giskeKeyUsageEnum
+  giskeAlgorithm: crypto.giskeAlgorithmEnum
+  giskeModeOfUse: crypto.giskeModeOfUseEnum
+  giskeExportability: crypto.giskeExportabilityEnum
+  ipv4Address: net.ipv4Address
+  ipv6Address: net.ipv6Address
+  macAddress: net.macAddress
+  monetaryAmount: misc.monetaryAmount
+  languageCode: language.codeSoftEnum
+  severityCode: syslog.severityEnum
+  site: site.site
+  siteID: site.siteID
+  systemOfMeasurementEnum: uom.systemOfMeasurementEnum
+  unitOfMeasurementSoftEnum: uom.unitOfMeasurementSoftEnum
+
+securitySchemes:
+  apikey: !include security_apikey.raml
+  basicAuthentication: !include security_basic.raml
+  noAuth: !include security_noAuth.raml
+  oAuth20: !include security_oauth20.raml

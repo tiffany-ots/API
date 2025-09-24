@@ -1,0 +1,20 @@
+[
+  {
+    "uniqueID" : "331303e0-a61e-4d7e-9c2d-677553e67de6",
+    "name" : "Shell Hazerswoude",
+    "siteIDs" : [
+      { "type":"SAP", "id":"123456" },
+      { "type":"SHIPTO", "id":"567890" }
+    ],
+    "country" : "NL"
+  },
+  {
+    "uniqueID" : "df6ecb1d-279c-40f2-aa08-3502d367b4f7",
+    "name" : "Shell Hazerswoude CNG",
+    "siteIDs" : [
+      { "type":"SAP", "id":"123457" },
+      { "type":"SHIPTO", "id":"567899" }
+    ],
+    "country" : "NL"
+  }
+]

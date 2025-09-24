@@ -1,0 +1,48 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "error.raml",
+	"definitions": {
+		"response": {
+			"allOf": [
+				{
+					"$ref": "extension.json#/definitions/extensible"
+				},
+				{
+					"properties": {
+						"error": {
+							"type": "number"
+						},
+						"description": {
+							"type": "string"
+						},
+						"reference": {
+							"description": "reference to an object",
+							"type": "string"
+						},
+						"recordCount": {
+							"description": "amount of records that were processed",
+							"type": "integer"
+						},
+						"url": {
+							"description": "url that can be used to retrieve error documentation",
+							"type": "string"
+						},
+						"stackTrace": {
+							"allOf": [
+								{
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								{
+									"description": "stack trace, encoded in one line per array item"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	}
+}

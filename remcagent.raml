@@ -1,0 +1,127 @@
+#%RAML 1.0
+title: REMC CHP
+version: 1.0
+baseUri: http:/hostname/ifsf-remc-agent/{version}
+mediaType: application/json
+protocols: [HTTP, HTTPS]
+securedBy: [core.noAuth, core.basicAuthentication, core.apikey, core.oAuth20]
+
+traits:
+  paged: !include traits/paged.raml
+  filteredByDeviceType: !include traits/deviceTypeFilter.raml
+  filteredByDeviceID: !include traits/deviceIDFilter.raml
+  filteredByRecordType: !include  traits/recordTypeFilter.raml
+  withViews: !include traits/withViews.raml
+  includeDisabled: !include traits/disabledFilter.raml
+
+uses:
+  core: libraries/ifsf-core-v1.0.0/core.raml
+  paged: traits/paged.raml
+  remc: libraries/remcTypes.raml
+  pci: libraries/pciSiteAssetData.raml
+
+/sites:
+  get:
+    displayName: List of site IDs monitored by this agent
+    description: >
+      This collection usually only has one item because an agent usually
+      only monitors a single site. However, it is technically possible for
+      a single REMC agent instance to monitor two "sites". For example, this
+      could happen at a single location with two forecourts, one for petrol/diesel
+      and the other for Natural Compressed Gas, using two separate site identifiers.
+    responses:
+      200:
+        body:
+          application/json:
+            type: string[]
+            example: !include examples/siteIDs.json
+      404:
+        body:
+          application/json:
+            type: core.error
+            example: !include examples/errorResponse404.json
+
+  /{siteID}:
+    get:
+      displayName: Allows REMC CHP to verify site details
+      description: >
+        General site information such as site id, address, etc.
+        The server will respond 200 if the site exists and API key can access
+        the site, 404 if the site does not exist and 403 if the apikey cannot
+        retrieve information for the requested site.
+      responses:
+        200:
+          body:
+            application/json:
+              type: core.site
+              example: !include examples/siteDetails.json
+        404:
+          body:
+            application/json:
+              type: core.error
+              example: !include examples/errorResponse404.json
+
+    /devices:
+      displayName: Devices description and configuration information
+      description: >
+        The device resource is used to store equipment information and
+        configuration.
+      get:
+        displayName: Obtain a list of devices for a site
+        description: >
+          Will return a list of active devices at the site. Can be filtered by device
+          type. This list contains a unique device identifier for each device and the
+          last configuration change date time for each device, to notify the server that
+          these devices need configuration update.
+        is: [ filteredByDeviceType, filteredByDeviceID, withViews ]
+        responses:
+          200:
+            body:
+              application/json:
+                type: remc.device[]
+                #TODO: Configure multiple examples one with configuration information.
+                example: !include examples/deviceList.json
+          404:
+            body:
+              application/json:
+                type: core.error
+                example: !include examples/errorResponse404.json
+
+    /remcRecords:
+      get:
+        displayName: Extract REMC records from the agent queue
+        description: >
+          Allows the CHP to query for REMC records available in the Device REMC
+          RecordsQueue. The lastPointReceivedFilter will instruct the agent to
+          return only remcRecords queued after the referenced record. If recordBlock
+          is set to 0, then all events in the queue will be returned.
+          This allows for multiple REMC CHPs to query agents.
+        is: [ paged, filteredByDeviceType, filteredByDeviceID, filteredByRecordType ]
+        responses:
+          200:
+            body:
+              application/json:
+                type: remc.device[]
+                example: !include examples/devicesWithConfigsEventsPoints.json
+          404:
+            body:
+              application/json:
+                type: core.error
+                example: !include examples/errorResponse404.json
+
+    /pciSiteAssetData:
+      get:
+        displayName: PCI Site Asset Data reports
+        description: >
+          Allows the CHP to query the PCI Asset Report queue.
+        is: [ paged ]
+        responses:
+          200:
+            body:
+              application/json:
+                type: pci.siteAssetData[]
+          404:
+            body:
+              application/json:
+                type: core.error
+                example: !include examples/errorResponse404.json

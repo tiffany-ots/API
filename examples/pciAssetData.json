@@ -1,0 +1,192 @@
+{
+  "id": "e51cff5a-7ceb-4b40-8348-5410ed369036",
+  "dateTimeStamp":"2016-07-16T15:00:00Z",
+  "site":{
+    "uniqueID" : "331303e0-a61e-4d7e-9c2d-677553e67de6",
+    "name" : "Shell Hazerswoude",
+    "siteIDs" : [
+      { "type":"SAP", "id":"123456" },
+      { "type":"SHIPTO", "id":"567890" }
+    ],
+    "addressLines" : [
+      "Delta 1A, Building L’Aimant",
+      "Business Park Ijsseloord 2"
+    ],
+    "city": "Arnhem",
+    "postalCode" : "6825 ML",
+    "region" :"Gelderland",
+    "country" : "NL",
+    "phoneNumbers" :[
+      { "type" : "main", "number" : "+31-26-376-4800" },
+      { "type" : "fax", "number" : "+31-26-376-4840" }
+    ],
+    "languages" : ["dut"],
+    "geoCoordinates":{
+      "latitude": 51.978889,
+      "longitude": 5.9657452
+    },
+    "brands": ["ESSO","On The Run"],
+    "tags": ["carwash","atm"]
+  },
+  "attendedMode": "unattended",
+  "posTerminals":
+  [
+    {
+      "sysID": 1,
+      "physicalDeviceInfo":
+      {
+        "deviceIdentifiers":
+        [{
+          "derivation": "libraryCall",
+          "type":"serialNumber",
+          "description":"Serial number goes here"
+        }],
+        "versionInfo":
+        {
+          "vendor": "Verifone",
+          "model": "Ruby2",
+          "softwareVersion": "Buypass Generic v2.08.04",
+          "hardwareVersion": "Verifone part number should go here"
+        }
+      },
+      "applicationStartTime": "2016-07-01T00:00:00Z",
+      "secureDataEntryDevices":
+      [
+        {
+          "sysID": 2,
+          "encryptionCapabilities":
+          [
+            {
+              "slot": 1,
+              "keyFunctions": ["pin"],
+              "algorithms" : ["3des"],
+              "giskeKeyHeader":
+              {
+                "keyUsage": "pinEncrypt",
+                "algorithm": "3des",
+                "modeOfUse": "encryptOnly",
+                "exportability":"nonExportable"
+              },
+              "description":"PIN master key"
+            }
+          ],
+          "physicalDeviceInfo":
+          {
+            "deviceIdentifiers":
+            [
+              {
+                "derivation": "libraryCall",
+                "type":"serialNumber",
+                "description":"212-205-796"
+              }
+            ],
+            "versionInfo":
+            {
+              "vendor": "Verifone",
+              "model": "Vx820",
+              "softwareVersion": "OrionTech Maestro PIN v2.0.1",
+              "hardwareVersion": "Verifone part number should go here"
+            }
+          },
+          "otherDeviceInfo":
+          [
+            {
+              "kind": "peripheral",
+              "connectionType": "rs232"
+            }
+          ],
+          "category":"secureDataEntry",
+          "location": "inside",
+          "integratedContactlessReader": false,
+          "emvData":
+          {
+            "l1Data":
+            {
+              "name": "kernel name goes here",
+              "version": "kernel version goes here",
+              "expirationDate": "2019-12-31",
+              "derivation": "libraryCall"
+            },
+            "type": "contact"
+          }
+        }
+      ]
+    }
+  ],
+  "merchantIDs":
+  [
+    {
+      "type": "Acquirer1",
+      "id": "123"
+    },
+    {
+      "type": "Acquirer2",
+      "id": "456"
+    }
+  ],
+  "dispenserHardwareInterfaces":
+  [
+    {
+      "sysID": 3,
+      "dispenserIDs": [1,2],
+      "physicalDeviceInfo":
+      {
+        "deviceIdentifiers":
+        [
+          {
+            "derivation": "libraryCall",
+            "type":"serialNumber",
+            "description":"212-205-798"
+          }
+        ],
+        "versionInfo":
+        {
+          "vendor": "OrionTech",
+          "model": "Orchidea Pump Controller",
+          "softwareVersion": "1.7.9",
+          "osVersion": "Verix V QCOOO9A2",
+          "hardwareVersion": "Vx570"
+        }
+      }
+    }
+  ],
+  "dispensers":
+  [
+    {
+      "sysID": 4,
+      "isBlender": false,
+      "physicalDeviceInfo": {
+        "deviceIdentifiers": [{
+          "derivation": "libraryCall",
+          "type":"serialNumber",
+          "description":"pump serial number as informed by dispenser electronics"
+        }],
+        "versionInfo":{
+          "vendor": "Gilbarco",
+          "model": "Encore 500S",
+          "firmwareVersion": "1.2.3"
+        }
+      }
+    },
+    {
+      "sysID": 5,
+      "isBlender": false,
+      "physicalDeviceInfo": {
+        "deviceIdentifiers":
+        [
+          {
+            "derivation": "libraryCall",
+            "type":"serialNumber",
+            "description":"pump motherboard serial number should go here"
+          }
+        ],
+        "versionInfo":
+        {
+          "vendor": "Gilbarco",
+          "model": "Encore 500S",
+          "firmwareVersion": "1.2.3"
+        }
+      }
+    }
+  ]
+}

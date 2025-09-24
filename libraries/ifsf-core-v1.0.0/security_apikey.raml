@@ -1,0 +1,36 @@
+#%RAML 1.0 SecurityScheme
+
+uses:
+  error: error.raml
+
+description: apikey security scheme as defined by IFSF Part 2.03 document.
+type: x-apikey
+describedBy:
+  headers:
+    X-Api-Key:
+      type: string
+      description: The key needed to perfom an IFSF API call
+      required: true
+  responses:
+    401:
+      description:
+          Unauthorized. This can happen if the user access was
+          revoked or the key has expired.
+      body:
+        application/json:
+          type: error.response
+          example:
+            {
+              "error": 401,
+              "description": "Unauthorized. Bad or expired key"
+            }
+    403:
+      description: Forbidden
+      body:
+        application/json:
+          type: error.response
+          example:
+            {
+              "error": 403,
+              "description": "Access forbidden"
+            }
