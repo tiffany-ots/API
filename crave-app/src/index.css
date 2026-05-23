@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #1C0A00;
+    color: #FFFFFF;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  * { box-sizing: border-box; }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .glass { background: rgba(42,18,0,0.85); backdrop-filter: blur(12px); }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-c-orange text-white font-semibold rounded-2xl px-6 py-4 transition-all duration-200 active:scale-95 hover:bg-c-light;
+  }
+  .btn-outline {
+    @apply border border-c-orange text-c-orange font-semibold rounded-2xl px-6 py-4 transition-all duration-200 active:scale-95 hover:bg-c-orange hover:text-white;
+  }
+  .card {
+    @apply bg-c-card border border-c-border rounded-2xl;
+  }
+  .input-field {
+    @apply bg-c-card border border-c-border rounded-2xl px-5 py-4 text-white placeholder-c-muted focus:outline-none focus:border-c-orange transition-colors;
+  }
+}
