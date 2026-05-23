@@ -20,12 +20,12 @@ export default function AdminLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAdminAuthenticated) navigate('/admin');
+    if (!isAdminAuthenticated) navigate('/admin/login', { replace: true });
   }, [isAdminAuthenticated, navigate]);
 
   const activeOrders = orders.filter((o) => o.status === 'preparing' || o.status === 'pending').length;
 
-  const handleLogout = () => { adminLogout(); navigate('/admin'); };
+  const handleLogout = () => { adminLogout(); navigate('/admin/login', { replace: true }); };
 
   return (
     <div className="flex h-screen bg-c-deep overflow-hidden">

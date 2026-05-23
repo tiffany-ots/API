@@ -16,7 +16,7 @@ export default function AdminLogin() {
     setLoading(true);
     setTimeout(() => {
       if (adminLogin(password)) {
-        navigate('/admin/dashboard');
+        navigate('/admin/dashboard', { replace: true });
       } else {
         setError('Mot de passe incorrect');
         setLoading(false);
@@ -84,7 +84,7 @@ export default function AdminLogin() {
         </p>
       </div>
 
-      <button onClick={() => navigate('/')} className="mt-6 text-c-muted text-sm hover:text-white transition-colors">
+      <button onClick={() => navigate('/#/')} className="mt-6 text-c-muted text-sm hover:text-white transition-colors">
         ← Retour à l'accueil
       </button>
     </div>

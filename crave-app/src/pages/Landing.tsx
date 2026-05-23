@@ -31,7 +31,7 @@ export default function Landing() {
     >
       {/* Admin shortcut */}
       <button
-        onClick={() => navigate('/admin')}
+        onClick={() => navigate('/admin/login')}
         className="absolute top-5 right-5 w-9 h-9 flex items-center justify-center text-c-muted hover:text-white transition-colors"
         title="Admin"
       >

@@ -27,16 +27,16 @@ export default function App() {
         <Route path="/tracking/:tableId/:orderId"         element={<Tracking />} />
 
         {/* Admin routes */}
-        <Route path="/admin"                              element={<AdminLogin />} />
-        <Route path="/admin"                              element={<AdminLayout />}>
-          <Route path="dashboard"                         element={<Dashboard />} />
-          <Route path="orders"                            element={<Orders />} />
-          <Route path="menu"                              element={<MenuManager />} />
-          <Route path="tables"                            element={<Tables />} />
-          <Route path="kitchen"                           element={<Kitchen />} />
-          <Route path="vue-serveur"                       element={<Kitchen />} />
-          <Route path="settings"                          element={<Settings />} />
-          <Route index                                    element={<Navigate to="dashboard" replace />} />
+        <Route path="/admin"             element={<Navigate to="/admin/login" replace />} />
+        <Route path="/admin/login"       element={<AdminLogin />} />
+        <Route path="/admin"             element={<AdminLayout />}>
+          <Route path="dashboard"        element={<Dashboard />} />
+          <Route path="orders"           element={<Orders />} />
+          <Route path="menu"             element={<MenuManager />} />
+          <Route path="tables"           element={<Tables />} />
+          <Route path="kitchen"          element={<Kitchen />} />
+          <Route path="vue-serveur"      element={<Kitchen />} />
+          <Route path="settings"         element={<Settings />} />
         </Route>
 
         {/* Fallback */}
