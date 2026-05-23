@@ -1,9 +1,5 @@
 import { useMemo } from 'react';
 import { TrendingUp, ShoppingBag, DollarSign, Clock, Users, ArrowUpRight } from 'lucide-react';
-import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
-  PieChart, Pie, Legend,
-} from 'recharts';
 import { useStore } from '../../store';
 import { formatPrice, formatDateShort } from '../../lib/utils';
 
@@ -21,6 +17,62 @@ const STATUS_LABELS: Record<string, string> = {
   served:    'Servi',
   cancelled: 'Annulé',
 };
+
+function BarChart({ data }: { data: { day: string; rev: number }[] }) {
+  const max = Math.max(...data.map((d) => d.rev), 1);
+  const W = 400, H = 160, pad = 28, barW = 28, gap = (W - pad * 2 - barW * data.length) / (data.length - 1);
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 160 }}>
+      {data.map((d, i) => {
+        const bh = Math.max(4, ((d.rev / max) * (H - 40)));
+        const x  = pad + i * (barW + gap);
+        const y  = H - 20 - bh;
+        const isLast = i === data.length - 1;
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width={barW} height={bh} rx={5} fill={isLast ? '#E8612C' : '#3D1E0A'} />
+            <text x={x + barW / 2} y={H - 4} textAnchor="middle" fill="#9B7B6B" fontSize={11}>{d.day}</text>
+            {isLast && d.rev > 0 && (
+              <text x={x + barW / 2} y={y - 4} textAnchor="middle" fill="#E8612C" fontSize={10}>{formatPrice(d.rev)}</text>
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function DonutChart({ data }: { data: { name: string; value: number; fill: string }[] }) {
+  const total = data.reduce((s, d) => s + d.value, 0);
+  if (total === 0) return <div className="flex items-center justify-center h-40 text-c-muted text-sm">Aucune donnée</div>;
+  const R = 60, r = 38, cx = 90, cy = 80;
+  let angle = -Math.PI / 2;
+  const slices = data.map((d) => {
+    const sweep = (d.value / total) * 2 * Math.PI;
+    const x1 = cx + R * Math.cos(angle), y1 = cy + R * Math.sin(angle);
+    angle += sweep;
+    const x2 = cx + R * Math.cos(angle), y2 = cy + R * Math.sin(angle);
+    const large = sweep > Math.PI ? 1 : 0;
+    const xi1 = cx + r * Math.cos(angle - sweep), yi1 = cy + r * Math.sin(angle - sweep);
+    const xi2 = cx + r * Math.cos(angle), yi2 = cy + r * Math.sin(angle);
+    return { ...d, d: `M${x1},${y1} A${R},${R},0,${large},1,${x2},${y2} L${xi2},${yi2} A${r},${r},0,${large},0,${xi1},${yi1} Z` };
+  });
+  return (
+    <div className="flex items-center gap-4">
+      <svg viewBox="0 0 180 160" style={{ width: 130, height: 120, flexShrink: 0 }}>
+        {slices.map((s, i) => <path key={i} d={s.d} fill={s.fill} />)}
+      </svg>
+      <ul className="space-y-1.5 text-xs min-w-0">
+        {slices.map((s, i) => (
+          <li key={i} className="flex items-center gap-1.5 text-c-muted">
+            <span className="w-2 h-2 rounded-full shrink-0" style={{ background: s.fill }} />
+            <span className="truncate">{s.name} <span className="text-white">{s.value}</span></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function Dashboard() {
   const { orders, settings } = useStore();
@@ -75,7 +127,6 @@ export default function Dashboard() {
 
   return (
     <div className="p-6">
-      {/* Header */}
       <div className="mb-6">
         <h1 className="font-serif text-3xl font-bold text-white">
           Tableau de <span className="text-c-orange">bord</span>
@@ -83,7 +134,6 @@ export default function Dashboard() {
         <p className="text-c-muted text-sm mt-1">Mise à jour automatique en temps réel.</p>
       </div>
 
-      {/* KPI */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {KPI.map(({ label, value, icon: Icon, color, sub }) => (
           <div key={label} className="card p-5">
@@ -95,51 +145,19 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Revenue bar chart */}
         <div className="lg:col-span-2 card p-5">
           <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
             <TrendingUp size={16} className="text-c-orange" /> Revenus — 7 derniers jours
           </h2>
-          <ResponsiveContainer width="100%" height={180}>
-            <BarChart data={revenue7} barSize={24}>
-              <XAxis dataKey="day" tick={{ fill: '#9B7B6B', fontSize: 12 }} axisLine={false} tickLine={false} />
-              <YAxis hide />
-              <Tooltip
-                contentStyle={{ background: '#2A1200', border: '1px solid #3D1E0A', borderRadius: 12, color: '#fff' }}
-                formatter={(v: number) => [formatPrice(v), 'Revenus']}
-                cursor={{ fill: 'rgba(232,97,44,0.08)' }}
-              />
-              <Bar dataKey="rev" radius={[6,6,0,0]}>
-                {revenue7.map((_, i) => (
-                  <Cell key={i} fill={i === 6 ? '#E8612C' : '#3D1E0A'} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          <BarChart data={revenue7} />
         </div>
-
-        {/* Pie chart */}
         <div className="card p-5">
           <h2 className="text-white font-semibold mb-4">Statuts commandes</h2>
-          {statusCounts.length > 0 ? (
-            <ResponsiveContainer width="100%" height={180}>
-              <PieChart>
-                <Pie data={statusCounts} cx="50%" cy="50%" innerRadius={45} outerRadius={70} dataKey="value" paddingAngle={3}>
-                  {statusCounts.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
-                </Pie>
-                <Tooltip contentStyle={{ background: '#2A1200', border: '1px solid #3D1E0A', borderRadius: 12, color: '#fff' }} />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: 11, color: '#9B7B6B' }} />
-              </PieChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="flex items-center justify-center h-40 text-c-muted text-sm">Aucune donnée</div>
-          )}
+          <DonutChart data={statusCounts} />
         </div>
       </div>
 
-      {/* Status breakdown */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
         {Object.entries(STATUS_LABELS).map(([key, label]) => {
           const count = orders.filter((o) => o.status === key).length;
@@ -153,14 +171,13 @@ export default function Dashboard() {
         })}
       </div>
 
-      {/* Recent orders */}
       <div className="card overflow-hidden">
         <div className="px-5 py-4 border-b border-c-border flex items-center justify-between">
           <h2 className="text-white font-semibold flex items-center gap-2">
             <Clock size={16} className="text-c-orange" /> Dernières commandes
           </h2>
           <button
-            onClick={() => window.location.href = '/admin/orders'}
+            onClick={() => window.location.href = '#/admin/orders'}
             className="text-c-orange text-sm flex items-center gap-1 hover:text-c-light"
           >
             Voir tout <ArrowUpRight size={14} />

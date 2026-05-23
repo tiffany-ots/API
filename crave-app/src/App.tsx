@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { HashRouter as BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Landing      from './pages/Landing';
 import Menu         from './pages/Menu';
 import Cart         from './pages/Cart';
@@ -7,7 +8,7 @@ import Confirmation from './pages/Confirmation';
 import Tracking     from './pages/Tracking';
 import AdminLogin   from './pages/admin/AdminLogin';
 import AdminLayout  from './pages/admin/AdminLayout';
-import Dashboard    from './pages/admin/Dashboard';
+const Dashboard    = lazy(() => import('./pages/admin/Dashboard'));
 import Orders       from './pages/admin/Orders';
 import MenuManager  from './pages/admin/MenuManager';
 import Tables       from './pages/admin/Tables';
@@ -30,7 +31,7 @@ export default function App() {
         <Route path="/admin"             element={<Navigate to="/admin/login" replace />} />
         <Route path="/admin/login"       element={<AdminLogin />} />
         <Route path="/admin"             element={<AdminLayout />}>
-          <Route path="dashboard"        element={<Dashboard />} />
+          <Route path="dashboard"        element={<Suspense fallback={null}><Dashboard /></Suspense>} />
           <Route path="orders"           element={<Orders />} />
           <Route path="menu"             element={<MenuManager />} />
           <Route path="tables"           element={<Tables />} />

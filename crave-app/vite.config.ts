@@ -8,8 +8,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         entryFileNames: 'assets/app.js',
-        chunkFileNames: 'assets/app-chunk.js',
+        chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/app.[ext]',
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom', 'zustand'],
+          icons: ['lucide-react'],
+        },
       },
     },
   },
